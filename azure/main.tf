@@ -41,6 +41,15 @@ module "vnet_workloads" {
   allowed_public_ips  = var.allowed_public_ips
 }
 
+module "vnet_peerings" {
+  source              = "./modules/vnet/peerings"
+  resource_group_name = azurerm_resource_group.default.name
+  gateway_vnet_id     = module.vnet_gateway.vnet_id
+  gateway_vnet_name   = module.vnet_gateway.vnet_name
+  workloads_vnet_id   = module.vnet_workloads.vnet_id
+  workloads_vnet_name = module.vnet_workloads.vnet_name
+}
+
 module "virtual_machine" {
   source              = "./modules/vm"
   location            = azurerm_resource_group.default.location
