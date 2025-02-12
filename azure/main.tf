@@ -24,12 +24,21 @@ resource "azurerm_resource_group" "default" {
   location = var.location
 }
 
-module "vnet" {
-  source              = "./modules/vnet"
+module "vnet_gateway" {
+  source              = "./modules/vnet/gateway"
   workload            = local.resource_affix
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
-  vnet_cidr_prefix    = var.vnet_cidr_prefix
+  vnet_cidr_prefix    = var.vnet_gateway_cidr_prefix
+}
+
+module "vnet_workloads" {
+  source              = "./modules/vnet/workloads"
+  workload            = local.resource_affix
+  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.default.location
+  vnet_cidr_prefix    = var.vnet_gateway_cidr_prefix
+  allowed_public_ips  = var.allowed_public_ips
 }
 
 module "virtual_machine" {
@@ -40,7 +49,7 @@ module "virtual_machine" {
   vm_public_key_path  = var.vm_public_key_path
   vm_admin_username   = var.vm_admin_username
   vm_size             = var.vm_size
-  subnet_id           = module.vnet.workloads_subnet_id
+  subnet_id           = module.vnet_workloads.workloads_subnet_id
 
   vm_image_publisher = var.vm_image_publisher
   vm_image_offer     = var.vm_image_offer

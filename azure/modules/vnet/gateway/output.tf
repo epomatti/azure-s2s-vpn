@@ -3,11 +3,7 @@ output "vnet_id" {
 }
 
 output "gateway_subnet_id" {
-  value = azurerm_subnet.workloads.id
-}
-
-output "workloads_subnet_id" {
-  value = azurerm_subnet.workloads.id
+  value = azurerm_subnet.gateway.id
 }
 
 output "vnet_name" {
