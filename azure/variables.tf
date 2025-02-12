@@ -14,6 +14,11 @@ variable "allowed_public_ips" {
   type = list(string)
 }
 
+### Virtual Network ###
+variable "vnet_cidr_prefix" {
+  type = string
+}
+
 ### Virtual Machine ###
 variable "vm_admin_username" {
   type = string

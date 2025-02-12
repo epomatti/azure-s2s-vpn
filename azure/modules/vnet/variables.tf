@@ -9,3 +9,7 @@ variable "resource_group_name" {
 variable "location" {
   type = string
 }
+
+variable "vnet_cidr_prefix" {
+  type = string
+}

@@ -27,3 +27,5 @@ Create the infrastructure:
 terraform init
 terraform apply -auto-approve
 ```
+
+https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal
