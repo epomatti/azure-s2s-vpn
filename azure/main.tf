@@ -37,7 +37,7 @@ module "vnet_workloads" {
   workload            = local.resource_affix
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
-  vnet_cidr_prefix    = var.vnet_gateway_cidr_prefix
+  vnet_cidr_prefix    = var.vnet_workloads_cidr_prefix
   allowed_public_ips  = var.allowed_public_ips
 }
 
