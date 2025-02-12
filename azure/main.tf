@@ -50,6 +50,19 @@ module "vnet_peerings" {
   workloads_vnet_name = module.vnet_workloads.vnet_name
 }
 
+module "vpn_gateway" {
+  source              = "./modules/vgw"
+  workload            = local.resource_affix
+  resource_group_name = azurerm_resource_group.default.name
+  location            = var.location
+  gateway_subnet_id   = module.vnet_gateway.gateway_subnet_id
+  vgw_vpn_type        = var.vgw_vpn_type
+  vgw_active_active   = var.vgw_active_active
+  vgw_enable_bgp      = var.vgw_enable_bgp
+  vgw_sku             = var.vgw_sku
+  vgw_generation      = var.vgw_generation
+}
+
 module "virtual_machine" {
   source              = "./modules/vm"
   location            = azurerm_resource_group.default.location

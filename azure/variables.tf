@@ -23,6 +23,36 @@ variable "vnet_workloads_cidr_prefix" {
   type = string
 }
 
+### Virtual Network Gateway ###
+variable "vgw_vpn_type" {
+  type = string
+}
+
+variable "vgw_active_active" {
+  type = bool
+}
+
+variable "vgw_enable_bgp" {
+  type = bool
+}
+
+variable "vgw_sku" {
+  type = string
+}
+
+variable "vgw_generation" {
+  type = string
+}
+
+### Local Network Gateway ###
+variable "lgw_gateway_address" {
+  type = string
+}
+
+variable "lgw_address_space" {
+  type = list(string)
+}
+
 ### Virtual Machine ###
 variable "vm_admin_username" {
   type = string
