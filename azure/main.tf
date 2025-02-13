@@ -63,6 +63,15 @@ module "vpn_gateway" {
   vgw_generation      = var.vgw_generation
 }
 
+module "local_network_gateway" {
+  source              = "./modules/lgw"
+  workload            = local.resource_affix
+  resource_group_name = azurerm_resource_group.default.name
+  location            = var.location
+  lgw_gateway_address = var.lgw_gateway_address
+  lgw_address_space   = var.lgw_address_space
+}
+
 module "virtual_machine" {
   source              = "./modules/vm"
   location            = azurerm_resource_group.default.location
