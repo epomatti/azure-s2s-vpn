@@ -15,6 +15,7 @@
         "logtype",
         "lsctl",
         "noninteractive",
+        "openvpn",
         "postgres",
         "quickstart",
         "rabbitmq",
