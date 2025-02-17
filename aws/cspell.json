@@ -1,0 +1,29 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "awscliv",
+        "Balena",
+        "certbot",
+        "cpus",
+        "hashicorp",
+        "linux",
+        "litware",
+        "livepatch",
+        "logtype",
+        "lsctl",
+        "noninteractive",
+        "postgres",
+        "quickstart",
+        "rabbitmq",
+        "rngd",
+        "sysinfo",
+        "urandom",
+        "virtualbox",
+        "xrdp"
+    ],
+    "ignoreWords": [],
+    "import": []
+}
