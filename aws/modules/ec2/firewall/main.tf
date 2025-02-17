@@ -28,6 +28,9 @@ resource "aws_instance" "default" {
   iam_instance_profile = aws_iam_instance_profile.default.id
   user_data            = file("${path.module}/userdata/ubuntu.sh")
 
+  # Required for the firewall
+  source_dest_check = false
+
   metadata_options {
     http_endpoint = "enabled"
     http_tokens   = "required"
