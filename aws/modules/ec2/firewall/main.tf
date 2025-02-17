@@ -1,5 +1,5 @@
 locals {
-  name = "firewall"
+  name = "pfsense-firewall"
 }
 
 resource "aws_iam_instance_profile" "default" {
