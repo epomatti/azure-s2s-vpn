@@ -15,6 +15,7 @@
         "logtype",
         "lsctl",
         "Netgate",
+        "nginx",
         "noninteractive",
         "onprem",
         "openvpn",
@@ -24,6 +25,7 @@
         "rabbitmq",
         "rngd",
         "sysinfo",
+        "traceroute",
         "urandom",
         "virtualbox",
         "xrdp"
