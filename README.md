@@ -1,6 +1,14 @@
-# azure-s2s-vpn
+# Azure Site-to-Site VPN
 
-## Deployment
+
+
+## 1 - Azure Deployment
+
+Commands are executed in the `azure` directory. General configuration can be based off of [this article][azure-s2s-vpn-tutorial].
+
+```sh
+cd azure
+```
 
 Start by creating the temporary keys for SSH authentication:
 
@@ -28,4 +36,26 @@ terraform init
 terraform apply -auto-approve
 ```
 
-https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal
+## 2 - AWS Deployment
+
+Commands are executed in the `azure` directory.
+
+```sh
+cd aws
+```
+
+Copy the configuration file:
+
+```sh
+cp config/local.auto.tfvars .auto.tfvars
+```
+
+```sh
+terraform init
+terraform apply -auto-approve
+```
+
+## 3 - Connection
+
+
+[azure-s2s-vpn-tutorial]: https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal
