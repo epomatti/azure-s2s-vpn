@@ -25,6 +25,13 @@ resource "azurerm_resource_group" "default" {
   location = var.location
 }
 
+resource "azurerm_log_analytics_workspace" "default" {
+  name                = "log-${local.resource_affix}"
+  location            = azurerm_resource_group.default.location
+  resource_group_name = azurerm_resource_group.default.name
+  sku                 = "PerGB2018"
+}
+
 module "vnet_gateway" {
   source              = "./modules/vnet/gateway"
   workload            = local.resource_affix
@@ -105,4 +112,14 @@ module "storage_tshoot" {
   source              = "./modules/storage"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
+}
+
+
+module "flow_logs" {
+  source                              = "./modules/flowlogs"
+  location                            = azurerm_resource_group.default.location
+  vnet_id                             = module.vnet_gateway.vnet_id
+  storage_account_id                  = module.storage_tshoot.storage_account_id
+  log_analytics_workspace_id          = azurerm_log_analytics_workspace.default.workspace_id
+  log_analytics_workspace_resource_id = azurerm_log_analytics_workspace.default.id
 }
