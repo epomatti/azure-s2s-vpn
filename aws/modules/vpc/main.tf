@@ -1,14 +1,12 @@
 ### Variables ###
 locals {
-  cidr_prefix = var.cidr_prefix
-  az1         = "${var.aws_region}a"
-  az2         = "${var.aws_region}b"
+  az1 = "${var.aws_region}a"
+  az2 = "${var.aws_region}b"
 }
 
 ### VPC ###
-
 resource "aws_vpc" "main" {
-  cidr_block           = "${local.cidr_prefix}.0.0/16"
+  cidr_block           = var.vpc_cidr
   instance_tenancy     = "default"
   enable_dns_hostnames = true
 
@@ -26,7 +24,6 @@ resource "aws_internet_gateway" "main" {
 }
 
 ### PRIVATE ###
-
 resource "aws_route_table" "private1" {
   vpc_id = aws_vpc.main.id
 
@@ -37,7 +34,7 @@ resource "aws_route_table" "private1" {
 
 resource "aws_subnet" "private1" {
   vpc_id            = aws_vpc.main.id
-  cidr_block        = "${local.cidr_prefix}.91.0/24"
+  cidr_block        = var.vpc_priv_subnet_cidr
   availability_zone = local.az1
 
   tags = {
@@ -51,7 +48,6 @@ resource "aws_route_table_association" "private1" {
 }
 
 ### PUBLIC ###
-
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
@@ -67,7 +63,7 @@ resource "aws_route_table" "public" {
 
 resource "aws_subnet" "public1" {
   vpc_id            = aws_vpc.main.id
-  cidr_block        = "${local.cidr_prefix}.1.0/24"
+  cidr_block        = var.vpc_public_subnet_cidr
   availability_zone = local.az1
 
   # CKV_AWS_130
@@ -84,7 +80,6 @@ resource "aws_route_table_association" "public1" {
 }
 
 ### REMOVE DEFAULT ###
-
 resource "aws_default_route_table" "internet" {
   default_route_table_id = aws_vpc.main.default_route_table_id
 }

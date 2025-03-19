@@ -12,10 +12,12 @@ provider "aws" {
 }
 
 module "vpc" {
-  source      = "./modules/vpc"
-  aws_region  = var.aws_region
-  workload    = var.workload
-  cidr_prefix = var.vpc_cidr_prefix
+  source                 = "./modules/vpc"
+  aws_region             = var.aws_region
+  workload               = var.workload
+  vpc_cidr               = var.vpc_cidr
+  vpc_priv_subnet_cidr   = var.vpc_priv_subnet_cidr
+  vpc_public_subnet_cidr = var.vpc_public_subnet_cidr
 }
 
 module "firewall" {
@@ -36,8 +38,9 @@ module "server" {
   volume_size   = var.ec2_server_volume_size
 }
 
-resource "aws_route" "name" {
-  route_table_id         = module.vpc.private_route_table_id
-  destination_cidr_block = var.remote_vpn_workload_cidr
-  network_interface_id   = module.firewall.network_interface_id
-}
+# TODO: Routing
+# resource "aws_route" "name" {
+#   route_table_id         = module.vpc.private_route_table_id
+#   destination_cidr_block = var.remote_vpn_workload_cidr
+#   network_interface_id   = module.firewall.network_interface_id
+# }

@@ -4,53 +4,61 @@ Azure VPN-as-a-Service connection with pfSense.
 
 <img src=".assets/azure-pfsense.png" />
 
-## 1 - AWS Deployment
+## 1 - AWS
 
-Commands are executed in the `azure` directory.
-
-```sh
-cd aws
-```
+### 1.1 - Resource Deployment
 
 Copy the configuration file:
 
 ```sh
-cp config/local.auto.tfvars .auto.tfvars
+cp aws/config/local.auto.tfvars aws/.auto.tfvars
 ```
+
+Use a secure login mechanism, such as AWS CLI with SSO:
 
 ```sh
-terraform init
-terraform apply -auto-approve
+export AWS_PROFILE=<profile>
+aws sso login
 ```
 
-Connect to pfSense and setup the initial WAN configuration:
+Create the resources:
+
+```sh
+terraform -chdir="aws" init
+terraform -chdir="aws" apply -auto-approve
+```
+
+### 1.2 - Configure pfSense
+
+Connect to pfSense and setup IPSec:
 
 > [!NOTE]
 > Get the password from the `pfsense-firewall` instance EC2 system log (can take a while to appear)
 
 - Username: admin
-- Password: <password>
+- Password: <system log password>
 
-Set up the VPN on the firewall server. Many options are available, of the most simple will be [IPSec Site-to-Site VPN with Pre-Shared Keys][ipsec-s2s-psk].
+To be compatible with Azure Virtual Gateway, use [IPSec Site-to-Site VPN with Pre-Shared Keys][ipsec-s2s-psk].
+
+
+
+| 
+
 
 ## 2 - Azure Deployment
 
-Commands are executed in the `azure` directory. General configuration can be based off of [this article][azure-s2s-vpn-tutorial].
-
-```sh
-cd azure
-```
+General configuration can be based off of [this article][azure-s2s-vpn-tutorial].
 
 Start by creating the temporary keys for SSH authentication:
 
 ```sh
-mkdir .keys && ssh-keygen -f .keys/tmp_rsa
+mkdir azure/.keys && ssh-keygen -f azure/.keys/tmp_rsa
 ```
 
 Copy the variables file:
 
 ```sh
-cp config/local.auto.tfvars .auto.tfvars
+cp azure/config/local.auto.tfvars azure/.auto.tfvars
 ```
 
 Set the required values:
@@ -63,19 +71,24 @@ Get the `pfSense` public IP from the `pfsense_firewall_host_elastic_public_ip` o
 ```terraform
 subscription_id            = "<SUBSCRIPTION_ID>"
 public_ip_address_to_allow = ["<YOUR_IP>"]
-lgw_gateway_address        = "<PFSENSE_PUBLIC_IP>"
-vcn_shared_key             = "00000000000000"
 ```
 
 Create the infrastructure:
 
 ```sh
-terraform init
-terraform apply -auto-approve
+terraform -chdir="azure" init
+terraform -chdir="azure" apply -auto-approve
 ```
 
 ## 3 - Connection
 
+In the **Azure** variables file, set the require parameters to create the tunnel:
+
+```terraform
+create_vpn_connection = true
+lgw_gateway_address   = "<PFSENSE_PUBLIC_IP>"
+vcn_shared_key        = "<SHARED_KEY>"
+```
 
 [azure-s2s-vpn-tutorial]: https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal
 [ipsec-s2s-psk]: https://docs.netgate.com/pfsense/en/latest/recipes/ipsec-s2s-psk.html

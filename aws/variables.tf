@@ -7,7 +7,15 @@ variable "workload" {
 }
 
 ### VPC ###
-variable "vpc_cidr_prefix" {
+variable "vpc_cidr" {
+  type = string
+}
+
+variable "vpc_public_subnet_cidr" {
+  type = string
+}
+
+variable "vpc_priv_subnet_cidr" {
   type = string
 }
 
