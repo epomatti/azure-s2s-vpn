@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -8,4 +8,4 @@ apt update && apt upgrade -y
 curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 ### NGINX
-sudo apt install -y nginx
+apt install -y nginx

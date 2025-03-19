@@ -7,51 +7,53 @@ terraform {
   }
 }
 
-resource "random_string" "affix" {
-  length  = 5
-  special = false
-  numeric = false
-  upper   = false
+resource "azurerm_resource_group" "vpn" {
+  name     = "rg-${var.workload}-vpn"
+  location = var.location
 }
 
-locals {
-  affix          = random_string.affix.result
-  resource_affix = "${var.workload}-${local.affix}"
+resource "azurerm_resource_group" "workload" {
+  name     = "rg-${var.workload}-workload"
+  location = var.location
 }
 
-# TODO: Create separate resource groups
-resource "azurerm_resource_group" "default" {
-  name     = "rg-${local.resource_affix}"
+resource "azurerm_resource_group" "tshoot" {
+  name     = "rg-${var.workload}-tshoot"
+  location = var.location
+}
+
+resource "azurerm_resource_group" "network" {
+  name     = "rg-${var.workload}-network"
   location = var.location
 }
 
 resource "azurerm_log_analytics_workspace" "default" {
-  name                = "log-${local.resource_affix}"
-  location            = azurerm_resource_group.default.location
-  resource_group_name = azurerm_resource_group.default.name
+  name                = "log-${var.workload}"
+  location            = azurerm_resource_group.tshoot.location
+  resource_group_name = azurerm_resource_group.tshoot.name
   sku                 = "PerGB2018"
 }
 
 module "vnet_gateway" {
   source              = "./modules/vnet/gateway"
-  workload            = local.resource_affix
-  resource_group_name = azurerm_resource_group.default.name
-  location            = azurerm_resource_group.default.location
+  workload            = var.workload
+  resource_group_name = azurerm_resource_group.vpn.name
+  location            = var.location
   vnet_cidr_prefix    = var.vnet_gateway_cidr_prefix
 }
 
 module "vnet_workloads" {
   source              = "./modules/vnet/workloads"
-  workload            = local.resource_affix
-  resource_group_name = azurerm_resource_group.default.name
-  location            = azurerm_resource_group.default.location
+  workload            = var.workload
+  resource_group_name = azurerm_resource_group.network.name
+  location            = var.location
   vnet_cidr_prefix    = var.vnet_workloads_cidr_prefix
   allowed_public_ips  = var.allowed_public_ips
 }
 
 module "vnet_peerings" {
   source              = "./modules/vnet/peerings"
-  resource_group_name = azurerm_resource_group.default.name
+  resource_group_name = azurerm_resource_group.network.name
   gateway_vnet_id     = module.vnet_gateway.vnet_id
   gateway_vnet_name   = module.vnet_gateway.vnet_name
   workloads_vnet_id   = module.vnet_workloads.vnet_id
@@ -60,8 +62,8 @@ module "vnet_peerings" {
 
 module "vpn_gateway" {
   source              = "./modules/vgw"
-  workload            = local.resource_affix
-  resource_group_name = azurerm_resource_group.default.name
+  workload            = var.workload
+  resource_group_name = azurerm_resource_group.vpn.name
   location            = var.location
   gateway_subnet_id   = module.vnet_gateway.gateway_subnet_id
   vgw_vpn_type        = var.vgw_vpn_type
@@ -74,8 +76,8 @@ module "vpn_gateway" {
 module "local_network_gateway" {
   count               = var.create_gateway_connection == true ? 1 : 0
   source              = "./modules/lgw"
-  workload            = local.resource_affix
-  resource_group_name = azurerm_resource_group.default.name
+  workload            = var.workload
+  resource_group_name = azurerm_resource_group.vpn.name
   location            = var.location
   lgw_gateway_address = var.lgw_gateway_address
   lgw_address_space   = var.lgw_address_space
@@ -84,8 +86,8 @@ module "local_network_gateway" {
 module "ipsec_connection" {
   count                    = var.create_gateway_connection == true ? 1 : 0
   source                   = "./modules/vcn"
-  location                 = azurerm_resource_group.default.location
-  resource_group_name      = azurerm_resource_group.default.name
+  location                 = var.location
+  resource_group_name      = azurerm_resource_group.vpn.name
   workload                 = var.workload
   vpn_gateway_id           = module.vpn_gateway.vgw_id
   local_network_gateway_id = module.local_network_gateway[0].lgw_id
@@ -94,8 +96,8 @@ module "ipsec_connection" {
 
 module "virtual_machine" {
   source              = "./modules/vm"
-  location            = azurerm_resource_group.default.location
-  resource_group_name = azurerm_resource_group.default.name
+  location            = var.location
+  resource_group_name = azurerm_resource_group.workload.name
   workload            = var.workload
   vm_public_key_path  = var.vm_public_key_path
   vm_admin_username   = var.vm_admin_username
@@ -110,14 +112,13 @@ module "virtual_machine" {
 
 module "storage_tshoot" {
   source              = "./modules/storage"
-  location            = azurerm_resource_group.default.location
-  resource_group_name = azurerm_resource_group.default.name
+  location            = var.location
+  resource_group_name = azurerm_resource_group.tshoot.name
 }
-
 
 module "flow_logs" {
   source                              = "./modules/flowlogs"
-  location                            = azurerm_resource_group.default.location
+  location                            = var.location
   vnet_id                             = module.vnet_gateway.vnet_id
   storage_account_id                  = module.storage_tshoot.storage_account_id
   log_analytics_workspace_id          = azurerm_log_analytics_workspace.default.workspace_id
