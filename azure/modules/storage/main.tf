@@ -11,14 +11,6 @@ resource "azurerm_storage_account" "default" {
 
   # Networking
   public_network_access_enabled = true
-
-  # Internet / Microsoft routing
-  network_rules {
-    default_action             = "Allow"
-    ip_rules                   = []
-    virtual_network_subnet_ids = []
-    bypass                     = ["AzureServices"]
-  }
 }
 
 data "azurerm_client_config" "current" {}
