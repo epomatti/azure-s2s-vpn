@@ -1,6 +1,6 @@
 ### Variables ###
 locals {
-  cidr_prefix = "10.0"
+  cidr_prefix = var.cidr_prefix
   az1         = "${var.aws_region}a"
   az2         = "${var.aws_region}b"
 }
@@ -29,6 +29,7 @@ resource "aws_internet_gateway" "main" {
 
 resource "aws_route_table" "private1" {
   vpc_id = aws_vpc.main.id
+
   tags = {
     Name = "rt-${var.workload}-priv1"
   }

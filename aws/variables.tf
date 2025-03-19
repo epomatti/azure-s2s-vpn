@@ -6,6 +6,15 @@ variable "workload" {
   type = string
 }
 
+### VPC ###
+variable "vpc_cidr_prefix" {
+  type = string
+}
+
+variable "remote_vpn_workload_cidr" {
+  type = string
+}
+
 ### Firewall ###
 variable "ec2_firewall_ami" {
   type = string

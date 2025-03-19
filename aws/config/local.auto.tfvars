@@ -2,6 +2,10 @@
 aws_region = "us-east-2"
 workload   = "litware"
 
+### VPC
+vpc_cidr_prefix          = "172.16"
+remote_vpn_workload_cidr = "10.100.0.0/16"
+
 ### Firewall
 ec2_firewall_ami           = "ami-0041e6f8b54e9c1b7" # pfSense-plus-ec2-24.11-RELEASE-aarch64.img 12-prod-fy74w7wpoqlrg
 ec2_firewall_instance_type = "m7g.large"

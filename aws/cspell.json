@@ -9,6 +9,7 @@
         "certbot",
         "cpus",
         "hashicorp",
+        "hostnames",
         "linux",
         "litware",
         "livepatch",

@@ -1,6 +1,6 @@
 # Azure Site-to-Site VPN
 
-
+<img src=".assets/azure-pfsense.png" />
 
 ## 1 - Azure Deployment
 
