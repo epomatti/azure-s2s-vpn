@@ -63,6 +63,8 @@ terraform -chdir="azure" apply -auto-approve
 
 ## 3 - Create the pfSense IPSec
 
+Configuration should be compatible with the Azure VGW [default policy][azure-ipsec-policy].
+
 Connect to pfSense and setup IPSec:
 
 > [!NOTE]
@@ -100,3 +102,4 @@ terraform -chdir="azure" apply -auto-approve
 
 [azure-s2s-vpn-tutorial]: https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal
 [ipsec-s2s-psk]: https://docs.netgate.com/pfsense/en/latest/recipes/ipsec-s2s-psk.html
+[azure-ipsec-policy]: https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpn-devices

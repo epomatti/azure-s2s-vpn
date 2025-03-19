@@ -1,8 +1,8 @@
-variable "resource_group_name" {
+variable "workload" {
   type = string
 }
 
-variable "workload" {
+variable "resource_group_name" {
   type = string
 }
 
@@ -10,10 +10,10 @@ variable "location" {
   type = string
 }
 
-variable "lgw_gateway_address" {
+variable "vnet_cidr_prefix" {
   type = string
 }
 
-variable "lgw_address_space" {
+variable "allowed_public_ips" {
   type = list(string)
 }

@@ -5,6 +5,13 @@ resource "azurerm_virtual_network" "default" {
   resource_group_name = var.resource_group_name
 }
 
+resource "azurerm_subnet" "gateway" {
+  name                 = "GatewaySubnet"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.default.name
+  address_prefixes     = ["${var.vnet_cidr_prefix}.10.0/27"]
+}
+
 resource "azurerm_subnet" "workloads" {
   name                 = "workloads"
   resource_group_name  = var.resource_group_name

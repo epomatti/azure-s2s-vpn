@@ -19,9 +19,9 @@ variable "vpc_priv_subnet_cidr" {
   type = string
 }
 
-variable "remote_vpn_workload_cidr" {
-  type = string
-}
+# variable "remote_vpn_workload_cidr" {
+#   type = string
+# }
 
 ### Firewall ###
 variable "ec2_firewall_ami" {

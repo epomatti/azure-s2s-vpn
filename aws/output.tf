@@ -13,3 +13,7 @@ output "ssm_start_session_command_server_host" {
 output "server_host_public_ip" {
   value = module.server.public_ip
 }
+
+output "server_host_private_ip" {
+  value = module.server.private_ip
+}

@@ -109,111 +109,130 @@ data "aws_vpc" "selected" {
   id = var.vpc_id
 }
 
+### Allow All ###
+resource "aws_security_group_rule" "ingress_allow_all" {
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.default.id
+}
+
+resource "aws_security_group_rule" "egress_allow_all" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.default.id
+}
+
 ### Generic HTTP  Rules ###
 
-resource "aws_security_group_rule" "allow_ingress_http" {
-  type              = "ingress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "TCP"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.default.id
-}
+# resource "aws_security_group_rule" "allow_ingress_http" {
+#   type              = "ingress"
+#   from_port         = 80
+#   to_port           = 80
+#   protocol          = "TCP"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.default.id
+# }
 
-resource "aws_security_group_rule" "allow_ingress_https" {
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "TCP"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.default.id
-}
+# resource "aws_security_group_rule" "allow_ingress_https" {
+#   type              = "ingress"
+#   from_port         = 443
+#   to_port           = 443
+#   protocol          = "TCP"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.default.id
+# }
 
-resource "aws_security_group_rule" "allow_egress_internet_http" {
-  type              = "egress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "TCP"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.default.id
-}
+# resource "aws_security_group_rule" "allow_egress_internet_http" {
+#   type              = "egress"
+#   from_port         = 80
+#   to_port           = 80
+#   protocol          = "TCP"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.default.id
+# }
 
-resource "aws_security_group_rule" "allow_egress_internet_https" {
-  type              = "egress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "TCP"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.default.id
-}
+# resource "aws_security_group_rule" "allow_egress_internet_https" {
+#   type              = "egress"
+#   from_port         = 443
+#   to_port           = 443
+#   protocol          = "TCP"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.default.id
+# }
 
-### Firewall Rules - Ingress ###
-resource "aws_security_group_rule" "allow_ingress_udp_500" {
-  description       = "UDP500"
-  type              = "ingress"
-  from_port         = 500
-  to_port           = 500
-  protocol          = "UDP"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.default.id
-}
+# ### Firewall Rules - Ingress ###
+# resource "aws_security_group_rule" "allow_ingress_udp_500" {
+#   description       = "UDP500"
+#   type              = "ingress"
+#   from_port         = 500
+#   to_port           = 500
+#   protocol          = "UDP"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.default.id
+# }
 
-resource "aws_security_group_rule" "allow_ingress_udp_4500" {
-  description       = "UDP4500"
-  type              = "ingress"
-  from_port         = 4500
-  to_port           = 4500
-  protocol          = "UDP"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.default.id
-}
+# resource "aws_security_group_rule" "allow_ingress_udp_4500" {
+#   description       = "UDP4500"
+#   type              = "ingress"
+#   from_port         = 4500
+#   to_port           = 4500
+#   protocol          = "UDP"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.default.id
+# }
 
-resource "aws_security_group_rule" "allow_ingress_openvpn" {
-  description       = "OpenVPN"
-  type              = "ingress"
-  from_port         = 1194
-  to_port           = 1194
-  protocol          = "UDP"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.default.id
-}
+# resource "aws_security_group_rule" "allow_ingress_openvpn" {
+#   description       = "OpenVPN"
+#   type              = "ingress"
+#   from_port         = 1194
+#   to_port           = 1194
+#   protocol          = "UDP"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.default.id
+# }
 
-resource "aws_security_group_rule" "allow_ingress_icmp" {
-  description       = "ICMP"
-  type              = "ingress"
-  from_port         = -1
-  to_port           = -1
-  protocol          = "ICMP"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.default.id
-}
+# resource "aws_security_group_rule" "allow_ingress_icmp" {
+#   description       = "ICMP"
+#   type              = "ingress"
+#   from_port         = -1
+#   to_port           = -1
+#   protocol          = "ICMP"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.default.id
+# }
 
-### Firewall Rules - Egress ###
-resource "aws_security_group_rule" "allow_egress_icmp" {
-  description       = "ICMP"
-  type              = "egress"
-  from_port         = -1
-  to_port           = -1
-  protocol          = "ICMP"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.default.id
-}
+# ### Firewall Rules - Egress ###
+# resource "aws_security_group_rule" "allow_egress_icmp" {
+#   description       = "ICMP"
+#   type              = "egress"
+#   from_port         = -1
+#   to_port           = -1
+#   protocol          = "ICMP"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.default.id
+# }
 
-### Application ###
-resource "aws_security_group_rule" "allow_application_ingress_vpc_http" {
-  type              = "ingress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "TCP"
-  cidr_blocks       = [data.aws_vpc.selected.cidr_block]
-  security_group_id = aws_security_group.default.id
-}
+# ### Application ###
+# resource "aws_security_group_rule" "allow_application_ingress_vpc_http" {
+#   type              = "ingress"
+#   from_port         = 80
+#   to_port           = 80
+#   protocol          = "TCP"
+#   cidr_blocks       = [data.aws_vpc.selected.cidr_block]
+#   security_group_id = aws_security_group.default.id
+# }
 
-resource "aws_security_group_rule" "allow_application_ingress_vpc_https" {
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "TCP"
-  cidr_blocks       = [data.aws_vpc.selected.cidr_block]
-  security_group_id = aws_security_group.default.id
-}
+# resource "aws_security_group_rule" "allow_application_ingress_vpc_https" {
+#   type              = "ingress"
+#   from_port         = 443
+#   to_port           = 443
+#   protocol          = "TCP"
+#   cidr_blocks       = [data.aws_vpc.selected.cidr_block]
+#   security_group_id = aws_security_group.default.id
+# }

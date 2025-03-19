@@ -32,7 +32,7 @@ module "firewall" {
 module "server" {
   source        = "./modules/ec2/server"
   vpc_id        = module.vpc.vpc_id
-  subnet_id     = module.vpc.public_subnet_id
+  subnet_id     = module.vpc.private_subnet_id
   ami           = var.ec2_server_ami
   instance_type = var.ec2_server_instance_type
   volume_size   = var.ec2_server_volume_size

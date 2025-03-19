@@ -10,6 +10,7 @@ variable "location" {
   type = string
 }
 
+### Virtual Private Gateway ###
 variable "gateway_subnet_id" {
   type = string
 }
@@ -32,4 +33,23 @@ variable "vgw_sku" {
 
 variable "vgw_generation" {
   type = string
+}
+
+### Local Gateway ###
+variable "lgw_gateway_address" {
+  type = string
+}
+
+variable "lgw_address_space" {
+  type = list(string)
+}
+
+### Virtual Connection ###
+variable "shared_key" {
+  type      = string
+  sensitive = false
+}
+
+variable "create_gateway_connection" {
+  type = bool
 }
