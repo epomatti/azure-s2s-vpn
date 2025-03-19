@@ -4,9 +4,7 @@ Azure VPN-as-a-Service connection with pfSense.
 
 <img src=".assets/azure-pfsense.png" />
 
-## 1 - AWS
-
-### 1.1 - Resource Deployment
+## 1 - AWS Deployment
 
 Copy the configuration file:
 
@@ -27,23 +25,6 @@ Create the resources:
 terraform -chdir="aws" init
 terraform -chdir="aws" apply -auto-approve
 ```
-
-### 1.2 - Configure pfSense
-
-Connect to pfSense and setup IPSec:
-
-> [!NOTE]
-> Get the password from the `pfsense-firewall` instance EC2 system log (can take a while to appear)
-
-- Username: admin
-- Password: <system log password>
-
-To be compatible with Azure Virtual Gateway, use [IPSec Site-to-Site VPN with Pre-Shared Keys][ipsec-s2s-psk].
-
-
-
-| 
-
 
 ## 2 - Azure Deployment
 
@@ -80,15 +61,42 @@ terraform -chdir="azure" init
 terraform -chdir="azure" apply -auto-approve
 ```
 
-## 3 - Connection
+## 3 - Create the pfSense IPSec
+
+Connect to pfSense and setup IPSec:
+
+> [!NOTE]
+> Get the password from the `pfsense-firewall` instance EC2 system log (can take a while to appear)
+
+- Username: admin
+- Password: <system log password>
+
+To be compatible with Azure Virtual Gateway, use [IPSec Site-to-Site VPN with Pre-Shared Keys][ipsec-s2s-psk].
+
+Create the following:
+
+1. IPSec P1
+2. IPSec P2
+3. Firewall rules
+
+## 4 - Azure Virtual Network Connection
 
 In the **Azure** variables file, set the require parameters to create the tunnel:
 
 ```terraform
-create_vpn_connection = true
-lgw_gateway_address   = "<PFSENSE_PUBLIC_IP>"
-vcn_shared_key        = "<SHARED_KEY>"
+create_gateway_connection = true
+lgw_gateway_address       = "<PFSENSE_PUBLIC_IP>"
+vcn_shared_key            = "<SHARED_KEY>"
 ```
+
+Re-apply the infrastructure to create the VPN connection:
+
+```sh
+terraform -chdir="azure" init
+terraform -chdir="azure" apply -auto-approve
+```
+
+
 
 [azure-s2s-vpn-tutorial]: https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal
 [ipsec-s2s-psk]: https://docs.netgate.com/pfsense/en/latest/recipes/ipsec-s2s-psk.html

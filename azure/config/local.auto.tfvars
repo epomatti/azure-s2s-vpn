@@ -16,11 +16,10 @@ vgw_sku           = "VpnGw2"
 vgw_generation    = "Generation2"
 
 ### Local Network Gateway ###
-lgw_gateway_address = "1.2.3.4"
-lgw_address_space   = ["172.16.0.0/16"]
-
-### IPSec Connection ###
-vcn_shared_key = "0000000000000000000000000000000000000000000000"
+create_gateway_connection = false
+lgw_gateway_address       = "1.2.3.4"
+lgw_address_space         = ["172.16.0.0/16"]
+vcn_shared_key            = "0000000000000000000000000000000000000000000000"
 
 ### Virtual Machine ###
 vm_admin_username  = "azureuser"

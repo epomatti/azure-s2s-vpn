@@ -19,6 +19,7 @@ locals {
   resource_affix = "${var.workload}-${local.affix}"
 }
 
+# TODO: Create separate resource groups
 resource "azurerm_resource_group" "default" {
   name     = "rg-${local.resource_affix}"
   location = var.location
@@ -64,12 +65,24 @@ module "vpn_gateway" {
 }
 
 module "local_network_gateway" {
+  count               = var.create_gateway_connection == true ? 1 : 0
   source              = "./modules/lgw"
   workload            = local.resource_affix
   resource_group_name = azurerm_resource_group.default.name
   location            = var.location
   lgw_gateway_address = var.lgw_gateway_address
   lgw_address_space   = var.lgw_address_space
+}
+
+module "ipsec_connection" {
+  count                    = var.create_gateway_connection == true ? 1 : 0
+  source                   = "./modules/vcn"
+  location                 = azurerm_resource_group.default.location
+  resource_group_name      = azurerm_resource_group.default.name
+  workload                 = var.workload
+  vpn_gateway_id           = module.vpn_gateway.vgw_id
+  local_network_gateway_id = module.local_network_gateway[0].lgw_id
+  shared_key               = var.vcn_shared_key
 }
 
 module "virtual_machine" {
@@ -86,14 +99,4 @@ module "virtual_machine" {
   vm_image_offer     = var.vm_image_offer
   vm_image_sku       = var.vm_image_sku
   vm_image_version   = var.vm_image_version
-}
-
-module "ipsec_connection" {
-  source                   = "./modules/vcn"
-  location                 = azurerm_resource_group.default.location
-  resource_group_name      = azurerm_resource_group.default.name
-  workload                 = var.workload
-  vpn_gateway_id           = module.vpn_gateway.vgw_id
-  local_network_gateway_id = module.local_network_gateway.lgw_id
-  shared_key               = var.vcn_shared_key
 }

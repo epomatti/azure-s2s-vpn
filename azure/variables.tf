@@ -45,6 +45,10 @@ variable "vgw_generation" {
 }
 
 ### Local Network Gateway ###
+variable "create_gateway_connection" {
+  type = bool
+}
+
 variable "lgw_gateway_address" {
   type = string
 }
@@ -53,7 +57,6 @@ variable "lgw_address_space" {
   type = list(string)
 }
 
-### VCN ###
 variable "vcn_shared_key" {
   type      = string
   sensitive = false
