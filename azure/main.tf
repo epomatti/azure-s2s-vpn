@@ -100,3 +100,9 @@ module "virtual_machine" {
   vm_image_sku       = var.vm_image_sku
   vm_image_version   = var.vm_image_version
 }
+
+module "storage_tshoot" {
+  source              = "./modules/storage"
+  location            = azurerm_resource_group.default.location
+  resource_group_name = azurerm_resource_group.default.name
+}
