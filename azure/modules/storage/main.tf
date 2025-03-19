@@ -26,3 +26,15 @@ resource "azurerm_role_assignment" "data_owner" {
   role_definition_name = "Storage Blob Data Owner"
   principal_id         = data.azurerm_client_config.current.object_id
 }
+
+resource "azurerm_storage_container" "tshoot" {
+  name                  = "vgw-tshoot"
+  storage_account_id    = azurerm_storage_account.default.id
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "vnet_flow_log" {
+  name                  = "vnet-flow-logs"
+  storage_account_id    = azurerm_storage_account.default.id
+  container_access_type = "private"
+}
