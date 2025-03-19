@@ -10,7 +10,7 @@ remote_vpn_workload_cidr = "10.100.0.0/24"
 
 ### Firewall
 ec2_firewall_ami           = "ami-0041e6f8b54e9c1b7" # pfSense-plus-ec2-24.11-RELEASE-aarch64.img 12-prod-fy74w7wpoqlrg
-ec2_firewall_instance_type = "t4g.large"
+ec2_firewall_instance_type = "m7g.large" # Looks like this image only supports the M class
 ec2_firewall_volume_size   = 20
 
 ### Server
