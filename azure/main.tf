@@ -87,3 +87,13 @@ module "virtual_machine" {
   vm_image_sku       = var.vm_image_sku
   vm_image_version   = var.vm_image_version
 }
+
+module "ipsec_connection" {
+  source                   = "./modules/vcn"
+  location                 = azurerm_resource_group.default.location
+  resource_group_name      = azurerm_resource_group.default.name
+  workload                 = var.workload
+  vpn_gateway_id           = module.vpn_gateway.vgw_id
+  local_network_gateway_id = module.local_network_gateway.lgw_id
+  shared_key               = var.vcn_shared_key
+}

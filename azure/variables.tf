@@ -53,6 +53,12 @@ variable "lgw_address_space" {
   type = list(string)
 }
 
+### VCN ###
+variable "vcn_shared_key" {
+  type      = string
+  sensitive = false
+}
+
 ### Virtual Machine ###
 variable "vm_admin_username" {
   type = string

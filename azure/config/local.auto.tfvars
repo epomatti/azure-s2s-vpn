@@ -19,6 +19,9 @@ vgw_generation    = "Generation2"
 lgw_gateway_address = "1.2.3.4"
 lgw_address_space   = ["172.16.0.0/16"]
 
+### IPSec Connection ###
+vcn_shared_key = "0000000000000000000000000000000000000000000000"
+
 ### Virtual Machine ###
 vm_admin_username  = "azureuser"
 vm_public_key_path = ".keys/tmp_rsa.pub"
