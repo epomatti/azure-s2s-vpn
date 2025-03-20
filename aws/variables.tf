@@ -23,6 +23,10 @@ variable "remote_vpn_workload_cidr" {
   type = string
 }
 
+variable "remote_vpn_p2s_cidr" {
+  type = string
+}
+
 ### Firewall ###
 variable "ec2_firewall_ami" {
   type = string
