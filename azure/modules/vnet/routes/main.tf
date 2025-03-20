@@ -2,7 +2,7 @@ resource "azurerm_route_table" "default" {
   name                          = "rt-${var.workload}-vpn"
   location                      = var.location
   resource_group_name           = var.resource_group_name
-  bgp_route_propagation_enabled = false
+  bgp_route_propagation_enabled = true
 }
 
 resource "azurerm_route" "gateway" {
