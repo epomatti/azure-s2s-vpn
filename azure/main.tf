@@ -69,6 +69,15 @@ module "vnet" {
   allowed_public_ips  = var.allowed_public_ips
 }
 
+module "routes" {
+  source              = "./modules/vnet/routes"
+  workload            = var.workload
+  resource_group_name = azurerm_resource_group.network.name
+  location            = var.location
+  remote_cidr         = var.lgw_address_space[0]
+  workload_subnet_id  = module.vnet.workloads_subnet_id
+}
+
 module "vpn" {
   source              = "./modules/vpn"
   workload            = var.workload
