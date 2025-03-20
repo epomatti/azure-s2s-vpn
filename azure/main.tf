@@ -22,6 +22,11 @@ resource "azurerm_resource_group" "network" {
   location = var.location
 }
 
+resource "azurerm_resource_group" "p2s" {
+  name     = "rg-${var.workload}-p2s"
+  location = var.location
+}
+
 resource "azurerm_log_analytics_workspace" "default" {
   name                = "log-${var.workload}"
   location            = azurerm_resource_group.tshoot.location
@@ -127,4 +132,38 @@ module "flow_logs" {
   storage_account_id                  = module.storage_tshoot.storage_account_id
   log_analytics_workspace_id          = azurerm_log_analytics_workspace.default.workspace_id
   log_analytics_workspace_resource_id = azurerm_log_analytics_workspace.default.id
+}
+
+### Point to Site ###
+module "vnet_p2s" {
+  source              = "./modules/p2s/vnet"
+  workload            = var.workload
+  resource_group_name = azurerm_resource_group.network.name
+  location            = var.location
+  vnet_cidr_prefix    = var.vnet_cidr_p2s_prefix
+  allowed_public_ips  = var.allowed_public_ips
+}
+
+module "vm_windows_desktop" {
+  count                           = var.p2s_create_windows_desktop ? 1 : 0
+  source                          = "./modules/p2s/vm"
+  workload                        = var.workload
+  resource_group_name             = azurerm_resource_group.p2s.name
+  location                        = azurerm_resource_group.p2s.location
+  subnet_id                       = module.vnet_p2s.subnet_id
+  windows_desktop_size            = var.p2s_windows_desktop_size
+  windows_desktop_admin_username  = var.p2s_windows_desktop_admin_username
+  windows_desktop_admin_password  = var.p2s_windows_desktop_admin_password
+  windows_desktop_image_publisher = var.p2s_windows_desktop_image_publisher
+  windows_desktop_image_offer     = var.p2s_windows_desktop_image_offer
+  windows_desktop_image_sku       = var.p2s_windows_desktop_image_sku
+  windows_desktop_image_version   = var.p2s_windows_desktop_image_version
+  p2s_desktop_user_object_id      = module.entraid.p2s_desktop_user_object_id
+}
+
+module "entraid" {
+  source                            = "./modules/p2s/entraid"
+  p2s_entraid_tenant_domain         = var.p2s_entraid_tenant_domain
+  p2s_entraid_desktop_user_name     = var.p2s_entraid_desktop_user_name
+  p2s_entraid_desktop_user_password = var.p2s_entraid_desktop_user_password
 }

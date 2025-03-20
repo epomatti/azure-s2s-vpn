@@ -19,6 +19,10 @@ variable "vnet_cidr_prefix" {
   type = string
 }
 
+variable "vnet_cidr_p2s_prefix" {
+  type = string
+}
+
 ### Virtual Network Gateway ###
 variable "vgw_vpn_type" {
   type = string
@@ -85,4 +89,53 @@ variable "vm_image_sku" {
 
 variable "vm_image_version" {
   type = string
+}
+
+### Windows Desktop ###
+
+variable "p2s_create_windows_desktop" {
+  type = bool
+}
+
+variable "p2s_windows_desktop_size" {
+  type = string
+}
+
+variable "p2s_windows_desktop_admin_username" {
+  type = string
+}
+
+variable "p2s_windows_desktop_admin_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "p2s_windows_desktop_image_publisher" {
+  type = string
+}
+
+variable "p2s_windows_desktop_image_offer" {
+  type = string
+}
+
+variable "p2s_windows_desktop_image_sku" {
+  type = string
+}
+
+variable "p2s_windows_desktop_image_version" {
+  type = string
+}
+
+### Entra ID ###
+variable "p2s_entraid_tenant_domain" {
+  type = string
+}
+
+variable "p2s_entraid_desktop_user_name" {
+  type = string
+}
+
+variable "p2s_entraid_desktop_user_password" {
+  type      = string
+  sensitive = true
 }

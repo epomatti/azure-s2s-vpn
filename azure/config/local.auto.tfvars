@@ -28,3 +28,19 @@ vm_image_publisher = "canonical"
 vm_image_offer     = "ubuntu-24_04-lts"
 vm_image_sku       = "server"
 vm_image_version   = "latest"
+
+### P2S ###
+# Windows Desktop
+p2s_create_windows_desktop          = true
+p2s_windows_desktop_size            = "Standard_B4as_v2"
+p2s_windows_desktop_admin_username  = "azureuser"
+p2s_windows_desktop_admin_password  = "P@ssw0rd.123"
+p2s_windows_desktop_image_publisher = "MicrosoftWindowsDesktop"
+p2s_windows_desktop_image_offer     = "Windows-11"
+p2s_windows_desktop_image_sku       = "win11-24h2-ent"
+p2s_windows_desktop_image_version   = "latest"
+
+# Entra ID
+p2s_entraid_tenant_domain         = "<TENANT_DOMAIN>"
+p2s_entraid_desktop_user_name     = "vpnuser"
+p2s_entraid_desktop_user_password = "P@ssw0rd.123"
