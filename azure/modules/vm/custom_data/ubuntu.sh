@@ -8,4 +8,4 @@ apt update && apt upgrade -y
 curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 ### NGINX
-apt install -y nginx
+apt install -y nginx traceroute
