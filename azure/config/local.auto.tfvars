@@ -10,7 +10,7 @@ vnet_cidr_prefix = "10.90"
 ### Virtual Network Gateway ###
 vgw_vpn_type      = "RouteBased"
 vgw_active_active = false
-vgw_enable_bgp    = false
+vgw_enable_bgp    = false # TODO: Check for P2s
 vgw_sku           = "VpnGw2"
 vgw_generation    = "Generation2"
 

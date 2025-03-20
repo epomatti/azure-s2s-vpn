@@ -63,7 +63,7 @@ resource "azurerm_virtual_network_gateway_connection" "default" {
 
   type                = "IPsec"
   connection_protocol = "IKEv2"
-  enable_bgp          = false
+  enable_bgp          = false # TODO: Check for P2s
 
   virtual_network_gateway_id = azurerm_virtual_network_gateway.main.id
   local_network_gateway_id   = azurerm_local_network_gateway.default[0].id

@@ -106,7 +106,9 @@ terraform -chdir="azure" apply -auto-approve
 
 This sample uses OpenVPN to enable Windows and Linux, according to the [specification][p2s-protocol] and it'll use [Microsoft Entra ID authentication](https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-entra-vpn-client-windows).
 
-Install the [Azure VPN Client](https://apps.microsoft.com/detail/9NP355QT2SQB?hl=en-us&gl=US&ocid=pdpshare).
+Install and configure the [Azure VPN Client](https://apps.microsoft.com/detail/9NP355QT2SQB?hl=en-us&gl=US&ocid=pdpshare).
+
+Create a new P2 channel with the Point-to-Site network.
 
 
 [azure-s2s-vpn-tutorial]: https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal
