@@ -13,6 +13,15 @@ resource "azurerm_route" "gateway" {
   next_hop_type       = "VirtualNetworkGateway"
 }
 
+resource "azurerm_route" "p2s" {
+  for_each            = var.p2s_cidr
+  name                = "vgw"
+  resource_group_name = var.resource_group_name
+  route_table_name    = azurerm_route_table.default.name
+  address_prefix      = each.key
+  next_hop_type       = "VirtualNetworkGateway"
+}
+
 resource "azurerm_subnet_route_table_association" "workload" {
   subnet_id      = var.workload_subnet_id
   route_table_id = azurerm_route_table.default.id

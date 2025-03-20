@@ -1,3 +1,10 @@
+data "azurerm_client_config" "current" {
+}
+
+locals {
+  current_tenant_id = data.azurerm_client_config.current.tenant_id
+}
+
 resource "azurerm_public_ip" "main" {
   name                = "pip-${var.workload}-vgw"
   resource_group_name = var.resource_group_name
@@ -25,6 +32,17 @@ resource "azurerm_virtual_network_gateway" "main" {
     public_ip_address_id          = azurerm_public_ip.main.id
     private_ip_address_allocation = "Dynamic"
     subnet_id                     = var.gateway_subnet_id
+  }
+
+  vpn_client_configuration {
+    address_space = var.p2s_vnet_cidr_blocks
+    aad_tenant    = "https://login.microsoftonline.com/${local.current_tenant_id}/"
+    aad_audience  = "c632b3df-fb67-4d84-bdcf-b95ad541b5c8" # Microsoft-registered
+    aad_issuer    = "https://sts.windows.net/${local.current_tenant_id}/"
+  }
+
+  custom_route {
+    address_prefixes = []
   }
 }
 

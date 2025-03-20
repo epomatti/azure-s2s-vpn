@@ -102,8 +102,14 @@ terraform -chdir="azure" init
 terraform -chdir="azure" apply -auto-approve
 ```
 
+## 5 - Point-to-Site (P2S)
+
+This sample uses OpenVPN to enable Windows and Linux, according to the [specification][p2s-protocol].
+
+
 
 
 [azure-s2s-vpn-tutorial]: https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal
 [ipsec-s2s-psk]: https://docs.netgate.com/pfsense/en/latest/recipes/ipsec-s2s-psk.html
 [azure-ipsec-policy]: https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpn-devices
+[p2s-protocol]: https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-about#protocol

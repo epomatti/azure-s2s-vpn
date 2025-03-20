@@ -53,3 +53,8 @@ variable "shared_key" {
 variable "create_gateway_connection" {
   type = bool
 }
+
+### Point-to-Site ###
+variable "p2s_vnet_cidr_blocks" {
+  type = list(string)
+}

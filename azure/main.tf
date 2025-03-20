@@ -75,6 +75,7 @@ module "routes" {
   resource_group_name = azurerm_resource_group.network.name
   location            = var.location
   remote_cidr         = var.lgw_address_space[0]
+  p2s_cidr            = module.vnet_p2s.vnet_cidr_blocks
   workload_subnet_id  = module.vnet.workloads_subnet_id
   gateway_subnet_id   = module.vnet.gateway_subnet_id
 }
@@ -84,6 +85,8 @@ module "vpn" {
   workload            = var.workload
   resource_group_name = azurerm_resource_group.network.name
   location            = var.location
+
+  create_gateway_connection = var.create_gateway_connection
 
   # VGW
   gateway_subnet_id = module.vnet.gateway_subnet_id
@@ -100,7 +103,8 @@ module "vpn" {
   # VCN
   shared_key = var.vcn_shared_key
 
-  create_gateway_connection = var.create_gateway_connection
+  # P2S
+  p2s_vnet_cidr_blocks = module.vnet_p2s.vnet_cidr_blocks
 }
 
 module "virtual_machine" {
