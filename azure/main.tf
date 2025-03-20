@@ -63,7 +63,7 @@ resource "azurerm_log_analytics_workspace" "default" {
 module "vnet" {
   source              = "./modules/vnet/default"
   workload            = var.workload
-  resource_group_name = azurerm_resource_group.vpn.name
+  resource_group_name = azurerm_resource_group.network.name
   location            = var.location
   vnet_cidr_prefix    = var.vnet_gateway_cidr_prefix
   allowed_public_ips  = var.allowed_public_ips
