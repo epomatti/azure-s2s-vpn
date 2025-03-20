@@ -62,7 +62,7 @@ resource "azurerm_network_security_rule" "allow_web_to_remote" {
 }
 
 resource "azurerm_network_security_rule" "inbound_icmp_to_azure" {
-  name                        = "AllowIcmpRemoteOutbound"
+  name                        = "AllowIcmpAzureOutbound"
   priority                    = 510
   direction                   = "Outbound"
   access                      = "Allow"
@@ -77,7 +77,7 @@ resource "azurerm_network_security_rule" "inbound_icmp_to_azure" {
 
 resource "azurerm_network_security_rule" "inbound_icmp_to_remote" {
   name                        = "AllowIcmpRemoteOutbound"
-  priority                    = 510
+  priority                    = 511
   direction                   = "Outbound"
   access                      = "Allow"
   protocol                    = "Icmp"

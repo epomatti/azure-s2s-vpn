@@ -96,6 +96,35 @@ resource "azurerm_network_security_rule" "inbound_icmp_to_remote" {
   network_security_group_name = azurerm_network_security_group.workloads.name
 }
 
+### P2S ###
+resource "azurerm_network_security_rule" "inbound_web_p2s_azure" {
+  name                        = "AllowP2SWebInbound"
+  priority                    = 600
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_ranges     = ["80", "443"]
+  source_address_prefix       = "10.200.0.0/16"
+  destination_address_prefix  = "VirtualNetwork"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.workloads.name
+}
+
+resource "azurerm_network_security_rule" "inbound_icmp_p2s_azure" {
+  name                        = "AllowP2SIcmpInbound"
+  priority                    = 700
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Icmp"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "10.200.0.0/16"
+  destination_address_prefix  = "VirtualNetwork"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.workloads.name
+}
+
 resource "azurerm_subnet_network_security_group_association" "workloads" {
   subnet_id                 = azurerm_subnet.workloads.id
   network_security_group_id = azurerm_network_security_group.workloads.id
