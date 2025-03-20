@@ -15,11 +15,7 @@ variable "allowed_public_ips" {
 }
 
 ### Virtual Network ###
-variable "vnet_gateway_cidr_prefix" {
-  type = string
-}
-
-variable "vnet_workloads_cidr_prefix" {
+variable "vnet_cidr_prefix" {
   type = string
 }
 

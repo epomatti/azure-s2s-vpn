@@ -5,8 +5,7 @@ workload           = "litware"
 allowed_public_ips = ["1.2.3.4/32"]
 
 ### Virtual Network ###
-vnet_gateway_cidr_prefix   = "10.90"
-vnet_workloads_cidr_prefix = "10.100"
+vnet_cidr_prefix = "10.90"
 
 ### Virtual Network Gateway ###
 vgw_vpn_type      = "RouteBased"
