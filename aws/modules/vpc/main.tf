@@ -27,6 +27,12 @@ resource "aws_internet_gateway" "main" {
 resource "aws_route_table" "private1" {
   vpc_id = aws_vpc.main.id
 
+  # FIXME: Go through NAT?
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+
   tags = {
     Name = "rt-${var.workload}-priv1"
   }
