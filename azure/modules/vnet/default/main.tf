@@ -40,6 +40,62 @@ resource "azurerm_network_security_rule" "ssh" {
   network_security_group_name = azurerm_network_security_group.workloads.name
 }
 
+resource "azurerm_network_security_rule" "inbound_web_from_remote" {
+  name                        = "AllowWebRemoteInbound"
+  priority                    = 500
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_ranges     = ["80", "443"]
+  source_address_prefix       = "172.16.0.0/16"
+  destination_address_prefix  = "VirtualNetwork"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.workloads.name
+}
+
+resource "azurerm_network_security_rule" "inbound_icmp_from_remote" {
+  name                        = "AllowIcmpRemoteInbound"
+  priority                    = 505
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Icmp"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "172.16.0.0/16"
+  destination_address_prefix  = "VirtualNetwork"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.workloads.name
+}
+
+resource "azurerm_network_security_rule" "inbound_web_to_remote" {
+  name                        = "AllowWebRemoteOutbound"
+  priority                    = 510
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_ranges     = ["80", "443"]
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = "172.16.0.0/16"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.workloads.name
+}
+
+resource "azurerm_network_security_rule" "inbound_icmp_to_remote" {
+  name                        = "AllowIcmpRemoteOutbound"
+  priority                    = 515
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "Icmp"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = "172.16.0.0/16"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.workloads.name
+}
+
 resource "azurerm_subnet_network_security_group_association" "workloads" {
   subnet_id                 = azurerm_subnet.workloads.id
   network_security_group_id = azurerm_network_security_group.workloads.id
