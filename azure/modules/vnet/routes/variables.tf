@@ -17,3 +17,7 @@ variable "remote_cidr" {
 variable "workload_subnet_id" {
   type = string
 }
+
+variable "gateway_subnet_id" {
+  type = string
+}

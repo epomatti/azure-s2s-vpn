@@ -76,6 +76,7 @@ module "routes" {
   location            = var.location
   remote_cidr         = var.lgw_address_space[0]
   workload_subnet_id  = module.vnet.workloads_subnet_id
+  gateway_subnet_id   = module.vnet.gateway_subnet_id
 }
 
 module "vpn" {

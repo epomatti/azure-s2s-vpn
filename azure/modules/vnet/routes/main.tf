@@ -17,3 +17,8 @@ resource "azurerm_subnet_route_table_association" "workload" {
   subnet_id      = var.workload_subnet_id
   route_table_id = azurerm_route_table.default.id
 }
+
+resource "azurerm_subnet_route_table_association" "gateway" {
+  subnet_id      = var.gateway_subnet_id
+  route_table_id = azurerm_route_table.default.id
+}
