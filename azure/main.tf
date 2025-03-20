@@ -7,11 +7,6 @@ terraform {
   }
 }
 
-resource "azurerm_resource_group" "vpn" {
-  name     = "rg-${var.workload}-vpn"
-  location = var.location
-}
-
 resource "azurerm_resource_group" "workload" {
   name     = "rg-${var.workload}-workload"
   location = var.location
@@ -82,7 +77,7 @@ module "routes" {
 module "vpn" {
   source              = "./modules/vpn"
   workload            = var.workload
-  resource_group_name = azurerm_resource_group.vpn.name
+  resource_group_name = azurerm_resource_group.network.name
   location            = var.location
 
   # VGW
