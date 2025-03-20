@@ -82,7 +82,8 @@ Create the following:
 
 1. IPSec P1 (AES256, SHA256, DH2)
 2. IPSec P2 (	GCM AES256, auto, PSF = off)
-3. Firewall rules
+3. Firewall rule - IPSec (should already be created by default with the P1 and P2)
+4. Firewall rule - WAN that allows the communication
 
 ## 4 - Azure Virtual Network Connection
 
