@@ -14,7 +14,7 @@ resource "azurerm_subnet" "default" {
 
 ### Network Security Groups ###
 resource "azurerm_network_security_group" "default" {
-  name                = "nsg-${var.workload}"
+  name                = "nsg-${var.workload}-p2s"
   location            = var.location
   resource_group_name = var.resource_group_name
 }
