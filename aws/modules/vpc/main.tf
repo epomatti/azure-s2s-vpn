@@ -23,6 +23,20 @@ resource "aws_internet_gateway" "main" {
   }
 }
 
+### NAT Gateway ###
+resource "aws_eip" "nat" {
+  domain = "vpc"
+}
+
+resource "aws_nat_gateway" "main" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public1.id
+
+  tags = {
+    Name = "nat-${var.workload}"
+  }
+}
+
 ### PRIVATE ###
 resource "aws_route_table" "private1" {
   vpc_id = aws_vpc.main.id
@@ -32,11 +46,10 @@ resource "aws_route_table" "private1" {
   }
 }
 
-# FIXME: Go through NAT?
-resource "aws_route" "igw1" {
+resource "aws_route" "private_subnet_to_nat_gateway" {
   route_table_id         = aws_route_table.private1.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.main.id
+  nat_gateway_id         = aws_nat_gateway.main.id
 }
 
 resource "aws_subnet" "private1" {
@@ -63,7 +76,6 @@ resource "aws_route_table" "public" {
   }
 }
 
-# FIXME: Go through NAT?
 resource "aws_route" "igw2" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"

@@ -103,7 +103,6 @@ data "aws_vpc" "selected" {
 }
 
 ### Generic HTTP  Rules ###
-
 resource "aws_security_group_rule" "allow_ingress_http" {
   type              = "ingress"
   from_port         = 80
