@@ -1,3 +1,7 @@
+locals {
+  p2s_cidr_list = tolist(var.p2s_cidr)
+}
+
 resource "azurerm_route_table" "default" {
   name                          = "rt-${var.workload}-vpn"
   location                      = var.location
@@ -14,11 +18,11 @@ resource "azurerm_route" "gateway" {
 }
 
 resource "azurerm_route" "p2s" {
-  for_each            = var.p2s_cidr
-  name                = "vgw"
+  count               = length(local.p2s_cidr_list)
+  name                = "p2s-${count.index}"
   resource_group_name = var.resource_group_name
   route_table_name    = azurerm_route_table.default.name
-  address_prefix      = each.key
+  address_prefix      = local.p2s_cidr_list[count.index]
   next_hop_type       = "VirtualNetworkGateway"
 }
 
