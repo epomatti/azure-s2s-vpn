@@ -77,8 +77,11 @@ To be compatible with Azure Virtual Gateway, use [IPSec Site-to-Site VPN with Pr
 
 Create the following:
 
-1. IPSec P1
-2. IPSec P2
+> [!NOTE]
+> Encryption based of the Azure Virtual Private Gateway default profile at the time of implementation
+
+1. IPSec P1 (AES256, SHA256, DH2)
+2. IPSec P2 (	GCM AES256, auto, PSF = off)
 3. Firewall rules
 
 ## 4 - Azure Virtual Network Connection
