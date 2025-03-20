@@ -44,3 +44,15 @@ module "server" {
 #   destination_cidr_block = var.remote_vpn_workload_cidr
 #   network_interface_id   = module.firewall.network_interface_id
 # }
+
+resource "aws_route" "r1" {
+  route_table_id         = module.vpc.private_route_table_id
+  destination_cidr_block = "10.90.0.0/16"
+  network_interface_id   = module.firewall.network_interface_id
+}
+
+resource "aws_route" "r2" {
+  route_table_id         = module.vpc.public_route_table_id
+  destination_cidr_block = "10.90.0.0/16"
+  network_interface_id   = module.firewall.network_interface_id
+}

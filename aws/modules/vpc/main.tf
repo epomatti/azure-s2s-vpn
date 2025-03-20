@@ -27,16 +27,17 @@ resource "aws_internet_gateway" "main" {
 resource "aws_route_table" "private1" {
   vpc_id = aws_vpc.main.id
 
-  # FIXME: Go through NAT?
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.main.id
-  }
-
   tags = {
     Name = "rt-${var.workload}-priv1"
   }
 }
+
+# FIXME: Go through NAT?
+# resource "aws_route" "igw1" {
+#   route_table_id         = aws_route_table.private1.id
+#   destination_cidr_block = "0.0.0.0/0"
+#   gateway_id             = aws_internet_gateway.main.id
+# }
 
 resource "aws_subnet" "private1" {
   vpc_id            = aws_vpc.main.id
@@ -57,15 +58,17 @@ resource "aws_route_table_association" "private1" {
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.main.id
-  }
-
   tags = {
     Name = "rt-${var.workload}-public"
   }
 }
+
+# FIXME: Go through NAT?
+# resource "aws_route" "igw2" {
+#   route_table_id         = aws_route_table.public.id
+#   destination_cidr_block = "0.0.0.0/0"
+#   gateway_id             = aws_internet_gateway.main.id
+# }
 
 resource "aws_subnet" "public1" {
   vpc_id            = aws_vpc.main.id
