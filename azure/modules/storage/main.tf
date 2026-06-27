@@ -1,3 +1,5 @@
+data "azurerm_client_config" "current" {}
+
 resource "azurerm_storage_account" "default" {
   name                       = "sttshootvpn82394"
   resource_group_name        = var.resource_group_name
@@ -12,8 +14,6 @@ resource "azurerm_storage_account" "default" {
   # Networking
   public_network_access_enabled = true
 }
-
-data "azurerm_client_config" "current" {}
 
 resource "azurerm_role_assignment" "data_contributor" {
   scope                = azurerm_storage_account.default.id

@@ -1,0 +1,23 @@
+#cloud-config
+
+timezone: "America/Sao_Paulo"
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+
+apt:
+  sources:
+    azure-cli:
+      source: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $RELEASE main"
+      keyid: BC528686B50D79E339D3721CEB3E94ADBE1229CF
+
+packages:
+  - iputils
+  - dnsutils
+  - nmap
+  - azure-cli
+  - nginx
+
+runcmd:
+  - [apt-get, autoremove, -y]
+  - [apt-get, clean]

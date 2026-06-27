@@ -1,46 +1,28 @@
-# General
-subscription_id    = "00000000-0000-0000-0000-000000000000"
-location           = "eastus2"
-workload           = "litware"
-allowed_public_ips = ["1.2.3.4/32"]
+### General ###
+subscription_id          = "00000000-0000-0000-0000-000000000000"
+location                 = "brazilsouth"
+workload                 = "litware"
+allowed_admin_public_ips = ["x.x.x.x/32"]
 
-### Virtual Network ###
-vnet_cidr_prefix = "10.90"
+### Network ###
+vnet_address_space                   = ["10.0.0.0/16"]
+vnet_gateway_subnet_address_prefixes = ["10.0.10.0/27"]
+vnet_servers_subnet_address_prefixes = ["10.0.20.0/24"]
+vnet_vpn_remote_address_prefixes     = ["172.16.0.0/16"]
 
-### Virtual Network Gateway ###
-vgw_vpn_type      = "RouteBased"
-vgw_active_active = false
-vgw_enable_bgp    = false # TODO: Check for P2s
-vgw_sku           = "VpnGw2"
-vgw_generation    = "Generation2"
+### VPN Gateway ###
+vgw_vpn_type             = "RouteBased"
+vgw_active_active        = false
+vgw_enable_bgp           = false
+vgw_sku                  = "VpnGw2AZ"
+vgw_generation           = "Generation2"
+vgw_nat_internal_mapping = "172.16.150.0/24"
+vgw_nat_external_mapping = "10.0.0.0/24"
 
-### Local Network Gateway ###
-create_gateway_connection = false
-lgw_gateway_address       = "1.2.3.4"
-lgw_address_space         = ["172.16.0.0/16"]
-vcn_shared_key            = "0000000000000000000000000000000000000000000000"
+### VPN Local Gateway ###
+lgw_gateway_address = "x.x.x.x"
+lgw_address_space   = ["172.16.0.0/16"]
 
-### Virtual Machine ###
-vm_admin_username  = "azureuser"
-vm_public_key_path = ".keys/tmp_rsa.pub"
-vm_size            = "Standard_B2ls_v2"
-vm_image_publisher = "canonical"
-vm_image_offer     = "ubuntu-24_04-lts"
-vm_image_sku       = "server"
-vm_image_version   = "latest"
-
-### P2S ###
-# Windows Desktop
-p2s_create_windows_desktop          = true
-p2s_windows_desktop_size            = "Standard_B4as_v2"
-p2s_windows_desktop_admin_username  = "azureuser"
-p2s_windows_desktop_admin_password  = "P@ssw0rd.123"
-p2s_windows_desktop_image_publisher = "MicrosoftWindowsDesktop"
-p2s_windows_desktop_image_offer     = "Windows-11"
-p2s_windows_desktop_image_sku       = "win11-24h2-ent"
-p2s_windows_desktop_image_version   = "latest"
-
-# Entra ID
-p2s_entraid_tenant_domain         = "<TENANT_DOMAIN>"
-p2s_entraid_desktop_user_name     = "vpnuser"
-p2s_entraid_desktop_user_password = "P@ssw0rd.123"
+### VPN Gateway Connection ###
+vcn_shared_key  = "<secret>"
+vcn_bgp_enabled = false

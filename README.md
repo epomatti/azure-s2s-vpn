@@ -33,7 +33,7 @@ General configuration can be based off of [this article][azure-s2s-vpn-tutorial]
 Start by creating the temporary keys for SSH authentication:
 
 ```sh
-mkdir azure/.keys && ssh-keygen -f azure/.keys/tmp_rsa
+mkdir azure/.keys && ssh-keygen -f azure/.keys/azure
 ```
 
 Copy the variables file:
