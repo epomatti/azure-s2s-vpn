@@ -41,8 +41,12 @@ variable "vgw_active_active" {
   type = bool
 }
 
-variable "vgw_enable_bgp" {
+variable "vgw_bgp_enabled" {
   type = bool
+}
+
+variable "vgw_bgp_settings_asn" {
+  type = number
 }
 
 variable "vgw_generation" {

@@ -14,6 +14,7 @@ vnet_vpn_remote_address_prefixes     = ["200.0.0.0/24"]
 vgw_vpn_type                              = "RouteBased"
 vgw_active_active                         = false
 vgw_enable_bgp                            = true
+vgw_bgp_settings_asn                      = 65515
 vgw_sku                                   = "VpnGw2AZ"
 vgw_generation                            = "Generation2"
 vgw_bgp_route_translation_for_nat_enabled = true

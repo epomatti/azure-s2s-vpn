@@ -21,14 +21,14 @@ resource "azurerm_virtual_network_gateway" "main" {
   type                                  = "Vpn"
   vpn_type                              = var.vgw_vpn_type
   active_active                         = var.vgw_active_active
-  bgp_enabled                           = var.vgw_enable_bgp
+  bgp_enabled                           = var.vgw_bgp_enabled
   sku                                   = var.vgw_sku
   generation                            = var.vgw_generation
   bgp_route_translation_for_nat_enabled = var.vgw_bgp_route_translation_for_nat_enabled
 
-  # bgp_settings {
-  #   asn = 65515
-  # }
+  bgp_settings {
+    asn = var.vgw_bgp_settings_asn
+  }
 
   ip_configuration {
     name                          = "vnetGatewayConfig001"

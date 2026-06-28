@@ -50,17 +50,18 @@ module "network" {
 
 ### VPN Gateway ###
 module "gateway" {
-  source              = "./modules/vpn/gateway"
-  workload            = var.workload
-  resource_group_name = module.resource_groups.network
-  location            = var.location
-  zones               = local.zones
-  gateway_subnet_id   = module.network.gateway_subnet_id
-  vgw_vpn_type        = var.vgw_vpn_type
-  vgw_active_active   = var.vgw_active_active
-  vgw_enable_bgp      = var.vgw_enable_bgp
-  vgw_sku             = var.vgw_sku
-  vgw_generation      = var.vgw_generation
+  source               = "./modules/vpn/gateway"
+  workload             = var.workload
+  resource_group_name  = module.resource_groups.network
+  location             = var.location
+  zones                = local.zones
+  gateway_subnet_id    = module.network.gateway_subnet_id
+  vgw_vpn_type         = var.vgw_vpn_type
+  vgw_active_active    = var.vgw_active_active
+  vgw_bgp_enabled      = var.vgw_bgp_enabled
+  vgw_bgp_settings_asn = var.vgw_bgp_settings_asn
+  vgw_sku              = var.vgw_sku
+  vgw_generation       = var.vgw_generation
 
   vgw_bgp_route_translation_for_nat_enabled = var.vgw_bgp_route_translation_for_nat_enabled
 
