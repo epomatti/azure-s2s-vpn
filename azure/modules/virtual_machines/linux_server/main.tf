@@ -40,7 +40,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   secure_boot_enabled = true
   vtpm_enabled        = true
 
-  custom_data = filebase64("${path.module}/custom_data/ubuntu.sh")
+  custom_data = filebase64("${path.module}/custom_data/cloud_init.yaml")
 
   admin_ssh_key {
     username   = local.admin_username

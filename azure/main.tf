@@ -127,17 +127,17 @@ module "vpn_connection" {
   ingress_nat_rule_ids       = module.gateway_nat_rules.ingress_nat_rules
 }
 
-# module "linux_server" {
-#   source              = "./modules/virtual_machines/linux_server"
-#   location            = var.location
-#   resource_group_name = module.resource_groups.servers
-#   workload            = var.workload
-#   subnet_id           = module.vnet.servers_subnet_id
-#   zone                = local.primary_zone
-# }
-
 module "diagnostic_settings" {
   source                     = "./modules/diagnostic_settings"
   log_analytics_workspace_id = module.monitoring.log_analytics_id
   vgw_id                     = module.gateway.vgw_id
+}
+
+module "linux_server" {
+  source              = "./modules/virtual_machines/linux_server"
+  location            = var.location
+  resource_group_name = module.resource_groups.servers
+  workload            = var.workload
+  subnet_id           = module.network.servers_subnet_id
+  zone                = local.primary_zone
 }
