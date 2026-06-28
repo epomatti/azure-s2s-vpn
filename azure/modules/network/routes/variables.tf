@@ -14,6 +14,6 @@ variable "servers_subnet_id" {
   type = string
 }
 
-variable "remote_egress_cidr" {
+variable "remote_nat_ingress_cidr" {
   type = string
 }

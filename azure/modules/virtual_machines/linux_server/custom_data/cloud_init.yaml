@@ -12,11 +12,17 @@ apt:
       keyid: BC528686B50D79E339D3721CEB3E94ADBE1229CF
 
 packages:
-  - iputils
+  - curl
   - dnsutils
+  - traceroute
+  - mtr
   - nmap
   - azure-cli
   - nginx
+
+snaps:
+  - name: trippy
+    classic: true
 
 runcmd:
   - [apt-get, autoremove, -y]

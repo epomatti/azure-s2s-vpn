@@ -12,8 +12,8 @@ locals {
   primary_zone = local.zones[0]
 
   # Remote NAT Address Prefixes
-  remote_nat_ingress_cidr             = "200.0.0.0/24"
-  remote_nat_egress_cidr              = "100.0.0.0/24"
+  remote_nat_ingress_cidr             = "192.168.100.0/24"
+  remote_nat_egress_cidr              = "192.168.200.0/24"
   remote_nat_ingress_address_prefixes = [local.remote_nat_ingress_cidr]
   remote_nat_egress_address_prefixes  = [local.remote_nat_egress_cidr]
 }
@@ -75,12 +75,12 @@ module "gateway" {
 }
 
 module "routes" {
-  source              = "./modules/network/routes"
-  workload            = var.workload
-  resource_group_name = module.resource_groups.network
-  location            = var.location
-  servers_subnet_id   = module.network.servers_subnet_id
-  remote_egress_cidr  = local.remote_nat_egress_cidr
+  source                  = "./modules/network/routes"
+  workload                = var.workload
+  resource_group_name     = module.resource_groups.network
+  location                = var.location
+  servers_subnet_id       = module.network.servers_subnet_id
+  remote_nat_ingress_cidr = local.remote_nat_ingress_cidr
 
   depends_on = [
     module.gateway

@@ -9,7 +9,7 @@ resource "azurerm_route" "servers_to_gateway" {
   name                = "servers-to-gateway"
   resource_group_name = var.resource_group_name
   route_table_name    = azurerm_route_table.spoke.name
-  address_prefix      = var.remote_egress_cidr
+  address_prefix      = var.remote_nat_ingress_cidr
   next_hop_type       = "VirtualNetworkGateway"
 }
 

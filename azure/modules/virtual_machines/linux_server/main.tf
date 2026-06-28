@@ -37,8 +37,9 @@ resource "azurerm_linux_virtual_machine" "main" {
   network_interface_ids = [azurerm_network_interface.main.id]
   zone                  = var.zone
 
-  secure_boot_enabled = true
-  vtpm_enabled        = true
+  secure_boot_enabled                                    = true
+  vtpm_enabled                                           = true
+  bypass_platform_safety_checks_on_user_schedule_enabled = true
 
   custom_data = filebase64("${path.module}/custom_data/cloud_init.yaml")
 

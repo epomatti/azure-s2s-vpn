@@ -34,7 +34,7 @@ resource "azurerm_network_security_rule" "allow_web_inbound_from_remote" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_ranges     = ["80", "443"]
-  source_address_prefixes     = var.vpn_remote_ingress_address_prefixes
+  source_address_prefixes     = var.vpn_remote_egress_address_prefixes
   destination_address_prefix  = "VirtualNetwork"
   resource_group_name         = var.resource_group_name
   network_security_group_name = azurerm_network_security_group.servers.name
@@ -49,7 +49,7 @@ resource "azurerm_network_security_rule" "allow_icmp_inbound_from_remote" {
   protocol                    = "Icmp"
   source_port_range           = "*"
   destination_port_range      = "*"
-  source_address_prefixes     = var.vpn_remote_ingress_address_prefixes
+  source_address_prefixes     = var.vpn_remote_egress_address_prefixes
   destination_address_prefix  = "VirtualNetwork"
   resource_group_name         = var.resource_group_name
   network_security_group_name = azurerm_network_security_group.servers.name
@@ -66,7 +66,7 @@ resource "azurerm_network_security_rule" "allow_web_outbound_to_remote" {
   source_port_range            = "*"
   destination_port_ranges      = ["80", "443"]
   source_address_prefix        = "VirtualNetwork"
-  destination_address_prefixes = var.vpn_remote_egress_address_prefixes
+  destination_address_prefixes = var.vpn_remote_ingress_address_prefixes
   resource_group_name          = var.resource_group_name
   network_security_group_name  = azurerm_network_security_group.servers.name
 }
@@ -81,7 +81,7 @@ resource "azurerm_network_security_rule" "allow_icmp_outbound_to_remote" {
   source_port_range            = "*"
   destination_port_range       = "*"
   source_address_prefix        = "VirtualNetwork"
-  destination_address_prefixes = var.vpn_remote_egress_address_prefixes
+  destination_address_prefixes = var.vpn_remote_ingress_address_prefixes
   resource_group_name          = var.resource_group_name
   network_security_group_name  = azurerm_network_security_group.servers.name
 }
