@@ -10,7 +10,7 @@ variable "resource_group_name" {
   type = string
 }
 
-variable "vgw_name" {
+variable "vgw_id" {
   type = string
 }
 

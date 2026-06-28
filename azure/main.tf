@@ -82,17 +82,21 @@ module "routes" {
   ]
 }
 
-# module "gateway_nat_rules" {
-#   source                       = "./modules/vpn/nat_rules"
-#   workload                     = var.workload
-#   resource_group_name          = module.resource_groups.network
-#   location                     = var.location
-#   vgw_name                     = module.gateway.vgw_name
-#   ingress_nat_external_mapping = var.vgw_ingress_nat_external_mapping
-#   ingress_nat_internal_mapping = var.vgw_ingress_nat_internal_mapping
-#   egress_nat_external_mapping  = var.vgw_egress_nat_external_mapping
-#   egress_nat_internal_mapping  = var.vgw_egress_nat_internal_mapping
-# }
+module "gateway_nat_rules" {
+  source                       = "./modules/vpn/nat_rules"
+  workload                     = var.workload
+  resource_group_name          = module.resource_groups.network
+  location                     = var.location
+  vgw_id                       = module.gateway.vgw_id
+  ingress_nat_external_mapping = var.vgw_ingress_nat_external_mapping
+  ingress_nat_internal_mapping = var.vgw_ingress_nat_internal_mapping
+  egress_nat_external_mapping  = var.vgw_egress_nat_external_mapping
+  egress_nat_internal_mapping  = var.vgw_egress_nat_internal_mapping
+
+  depends_on = [
+    module.gateway
+  ]
+}
 
 module "local_network_gateway" {
   source              = "./modules/vpn/local_network_gateway"
