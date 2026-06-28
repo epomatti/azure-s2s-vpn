@@ -22,15 +22,6 @@ module "spoke" {
   resource_group_name = var.resource_group_name
 }
 
-module "peering" {
-  source              = "./peering"
-  resource_group_name = var.resource_group_name
-  hub_vnet_id         = module.hub.vnet_id
-  hub_vnet_name       = module.hub.vnet_name
-  spoke_vnet_id       = module.spoke.vnet_id
-  spoke_vnet_name     = module.spoke.vnet_name
-}
-
 module "nsg_servers" {
   source                              = "./nsg/servers"
   workload                            = var.workload

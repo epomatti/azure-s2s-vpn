@@ -74,6 +74,19 @@ module "gateway" {
   ]
 }
 
+module "network_peering" {
+  source              = "./modules/network/peering"
+  resource_group_name = module.resource_groups.network
+  hub_vnet_id         = module.network.hub_vnet_id
+  hub_vnet_name       = module.network.hub_vnet_name
+  spoke_vnet_id       = module.network.spoke_vnet_id
+  spoke_vnet_name     = module.network.spoke_vnet_name
+
+  depends_on = [
+    module.gateway
+  ]
+}
+
 module "routes" {
   source                  = "./modules/network/routes"
   workload                = var.workload
