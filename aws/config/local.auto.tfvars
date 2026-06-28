@@ -3,10 +3,10 @@ aws_region = "sa-east-1"
 workload   = "contoso"
 
 ### VPC
-vpc_cidr                 = "172.16.0.0/12"
+vpc_cidr                 = "172.16.0.0/16"
 vpc_public_subnet_cidr   = "172.16.50.0/24"
 vpc_priv_subnet_cidr     = "172.16.100.0/24"
-remote_vpn_workload_cidr = "172.16.0.0/24"
+remote_vpn_workload_cidr = "192.168.200.0/24"
 
 ### Firewall
 ec2_firewall_ami           = "ami-0dcb8e7f912279c9a"
