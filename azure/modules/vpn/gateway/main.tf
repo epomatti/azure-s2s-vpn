@@ -18,12 +18,13 @@ resource "azurerm_virtual_network_gateway" "main" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  type          = "Vpn"
-  vpn_type      = var.vgw_vpn_type
-  active_active = var.vgw_active_active
-  bgp_enabled   = var.vgw_enable_bgp
-  sku           = var.vgw_sku
-  generation    = var.vgw_generation
+  type                                  = "Vpn"
+  vpn_type                              = var.vgw_vpn_type
+  active_active                         = var.vgw_active_active
+  bgp_enabled                           = var.vgw_enable_bgp
+  sku                                   = var.vgw_sku
+  generation                            = var.vgw_generation
+  bgp_route_translation_for_nat_enabled = var.vgw_bgp_route_translation_for_nat_enabled
 
   # bgp_settings {
   #   asn = 65515

@@ -61,16 +61,12 @@ module "gateway" {
   vgw_enable_bgp      = var.vgw_enable_bgp
   vgw_sku             = var.vgw_sku
   vgw_generation      = var.vgw_generation
-}
 
-module "gateway_nat_rules" {
-  source               = "./modules/vpn/nat_rules"
-  workload             = var.workload
-  resource_group_name  = module.resource_groups.network
-  location             = var.location
-  vgw_name             = module.gateway.vgw_name
-  nat_internal_mapping = var.vgw_nat_internal_mapping
-  nat_external_mapping = var.vgw_nat_external_mapping
+  vgw_bgp_route_translation_for_nat_enabled = var.vgw_bgp_route_translation_for_nat_enabled
+
+  depends_on = [
+    module.network
+  ]
 }
 
 module "routes" {
@@ -80,7 +76,23 @@ module "routes" {
   location              = var.location
   servers_subnet_id     = module.network.servers_subnet_id
   remote_address_prefix = var.vnet_vpn_remote_address_prefixes[0]
+
+  depends_on = [
+    module.gateway
+  ]
 }
+
+# module "gateway_nat_rules" {
+#   source                       = "./modules/vpn/nat_rules"
+#   workload                     = var.workload
+#   resource_group_name          = module.resource_groups.network
+#   location                     = var.location
+#   vgw_name                     = module.gateway.vgw_name
+#   ingress_nat_external_mapping = var.vgw_ingress_nat_external_mapping
+#   ingress_nat_internal_mapping = var.vgw_ingress_nat_internal_mapping
+#   egress_nat_external_mapping  = var.vgw_egress_nat_external_mapping
+#   egress_nat_internal_mapping  = var.vgw_egress_nat_internal_mapping
+# }
 
 module "local_network_gateway" {
   source              = "./modules/vpn/local_network_gateway"

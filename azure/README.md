@@ -35,3 +35,6 @@ Create the infrastructure:
 terraform init
 terraform apply -auto-approve
 ```
+
+https://youtu.be/K3-isCrb17o
+

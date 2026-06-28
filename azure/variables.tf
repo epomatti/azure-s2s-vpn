@@ -53,11 +53,23 @@ variable "vgw_sku" {
   type = string
 }
 
-variable "vgw_nat_internal_mapping" {
+variable "vgw_bgp_route_translation_for_nat_enabled" {
+  type = bool
+}
+
+variable "vgw_ingress_nat_external_mapping" {
   type = string
 }
 
-variable "vgw_nat_external_mapping" {
+variable "vgw_ingress_nat_internal_mapping" {
+  type = string
+}
+
+variable "vgw_egress_nat_external_mapping" {
+  type = string
+}
+
+variable "vgw_egress_nat_internal_mapping" {
   type = string
 }
 

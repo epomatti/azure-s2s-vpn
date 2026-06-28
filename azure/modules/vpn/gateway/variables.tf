@@ -37,3 +37,7 @@ variable "vgw_sku" {
 variable "vgw_generation" {
   type = string
 }
+
+variable "vgw_bgp_route_translation_for_nat_enabled" {
+  type = bool
+}

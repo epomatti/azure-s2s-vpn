@@ -14,10 +14,18 @@ variable "vgw_name" {
   type = string
 }
 
-variable "nat_internal_mapping" {
+variable "ingress_nat_external_mapping" {
   type = string
 }
 
-variable "nat_external_mapping" {
+variable "ingress_nat_internal_mapping" {
+  type = string
+}
+
+variable "egress_nat_external_mapping" {
+  type = string
+}
+
+variable "egress_nat_internal_mapping" {
   type = string
 }
