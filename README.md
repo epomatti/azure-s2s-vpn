@@ -81,9 +81,11 @@ Create the following:
 > Encryption based of the Azure Virtual Private Gateway default profile at the time of implementation
 
 1. IPSec P1 (AES256, SHA256, DH2)
-2. IPSec P2 (	GCM AES256, auto, PSF = off)
+2. IPSec P2 (GCM AES256, auto, PFS = off)
 3. Firewall rule - IPSec (should already be created by default with the P1 and P2)
 4. Firewall rule - WAN that allows the communication
+
+P2 == Routed (VTI)
 
 ## 4 - Azure Virtual Network Connection
 

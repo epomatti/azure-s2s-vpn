@@ -103,28 +103,29 @@ module "gateway_nat_rules" {
   ]
 }
 
-# module "local_network_gateway" {
-#   count               = var.lgw_create ? 1 : 0
-#   source              = "./modules/vpn_gateway/local_network_gateway"
-#   workload            = var.workload
-#   resource_group_name = module.resource_groups.network
-#   location            = var.location
-#   lgw_gateway_address = var.lgw_gateway_address
-#   lgw_address_space   = var.lgw_address_space
-# }
+module "local_network_gateway" {
+  count               = var.lgw_create ? 1 : 0
+  source              = "./modules/vpn_gateway/local_network_gateway"
+  workload            = var.workload
+  resource_group_name = module.resource_groups.network
+  location            = var.location
+  lgw_gateway_address = var.lgw_gateway_address
+  lgw_address_space   = var.lgw_address_space
+}
 
-# module "vpn_connection" {
-#   count                      = var.vcn_create ? 1 : 0
-#   source                     = "./modules/vpn_gateway/connection"
-#   workload                   = var.workload
-#   resource_group_name        = module.resource_groups.network
-#   location                   = var.location
-#   virtual_network_gateway_id = module.gateway.vgw_id
-#   lgw_gateway_address        = var.lgw_gateway_address
-#   lgw_address_space          = var.lgw_address_space
-#   shared_key                 = var.vcn_shared_key
-#   bgp_enabled                = var.vcn_bgp_enabled
-# }
+module "vpn_connection" {
+  count                      = var.vcn_create ? 1 : 0
+  source                     = "./modules/vpn_gateway/connection"
+  workload                   = var.workload
+  resource_group_name        = module.resource_groups.network
+  location                   = var.location
+  virtual_network_gateway_id = module.gateway.vgw_id
+  shared_key                 = var.vcn_shared_key
+  bgp_enabled                = var.vcn_bgp_enabled
+  local_network_gateway_id   = module.local_network_gateway[0].local_network_gateway_id
+  egress_nat_rule_ids        = module.gateway_nat_rules.egress_nat_rules
+  ingress_nat_rule_ids       = module.gateway_nat_rules.ingress_nat_rules
+}
 
 # module "linux_server" {
 #   source              = "./modules/virtual_machines/linux_server"
@@ -134,3 +135,9 @@ module "gateway_nat_rules" {
 #   subnet_id           = module.vnet.servers_subnet_id
 #   zone                = local.primary_zone
 # }
+
+module "diagnostic_settings" {
+  source                     = "./modules/diagnostic_settings"
+  log_analytics_workspace_id = module.monitoring.log_analytics_id
+  vgw_id                     = module.gateway.vgw_id
+}

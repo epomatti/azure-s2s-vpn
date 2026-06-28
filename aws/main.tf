@@ -54,14 +54,14 @@ resource "aws_route" "r2" {
   network_interface_id   = module.firewall.network_interface_id
 }
 
-resource "aws_route" "p2s1" {
-  route_table_id         = module.vpc.public_route_table_id
-  destination_cidr_block = var.remote_vpn_p2s_cidr
-  network_interface_id   = module.firewall.network_interface_id
-}
+# resource "aws_route" "p2s1" {
+#   route_table_id         = module.vpc.public_route_table_id
+#   destination_cidr_block = var.remote_vpn_p2s_cidr
+#   network_interface_id   = module.firewall.network_interface_id
+# }
 
-resource "aws_route" "p2s2" {
-  route_table_id         = module.vpc.private_route_table_id
-  destination_cidr_block = var.remote_vpn_p2s_cidr
-  network_interface_id   = module.firewall.network_interface_id
-}
+# resource "aws_route" "p2s2" {
+#   route_table_id         = module.vpc.private_route_table_id
+#   destination_cidr_block = var.remote_vpn_p2s_cidr
+#   network_interface_id   = module.firewall.network_interface_id
+# }

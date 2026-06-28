@@ -17,11 +17,11 @@ vgw_bgp_route_translation_for_nat_enabled = true
 remote_network_cidr = "172.16.100.0/24"
 
 ### VPN Local Gateway ###
-lgw_create          = false
-lgw_gateway_address = "1.2.3.4"
-lgw_address_space   = ["172.16.0.0/12"]
+lgw_create          = true
+lgw_gateway_address = "x.x.x.x"
+lgw_address_space   = ["172.16.100.0/24"]
 
 ### VPN Gateway Connection ###
-vcn_create      = false
+vcn_create      = true
 vcn_shared_key  = "<secret>"
-vcn_bgp_enabled = true
+vcn_bgp_enabled = false
