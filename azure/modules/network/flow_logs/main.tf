@@ -1,12 +1,7 @@
-data "azurerm_network_watcher" "default" {
-  name                = "NetworkWatcher_${var.location}"
-  resource_group_name = "NetworkWatcherRG"
-}
-
 resource "azurerm_network_watcher_flow_log" "vnet_flow_logs" {
-  network_watcher_name = data.azurerm_network_watcher.default.name
-  resource_group_name  = data.azurerm_network_watcher.default.resource_group_name
-  name                 = "vnet-flow-logs"
+  network_watcher_name = var.network_watcher_name
+  resource_group_name  = var.network_watcher_resource_group_name
+  name                 = "vnet-${var.name}-flow-logs"
 
   target_resource_id = var.vnet_id
   storage_account_id = var.storage_account_id

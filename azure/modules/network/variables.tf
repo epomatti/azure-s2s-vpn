@@ -10,18 +10,6 @@ variable "resource_group_name" {
   type = string
 }
 
-variable "vnet_address_space" {
-  type = list(string)
-}
-
-variable "gateway_subnet_address_prefixes" {
-  type = list(string)
-}
-
-variable "servers_subnet_address_prefixes" {
-  type = list(string)
-}
-
 variable "vpn_remote_address_prefixes" {
   type = list(string)
 }

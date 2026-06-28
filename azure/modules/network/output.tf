@@ -1,7 +1,7 @@
-output "servers_subnet_id" {
-  value = azurerm_subnet.servers.id
+output "gateway_subnet_id" {
+  value = module.hub.gateway_subnet_id
 }
 
-output "gateway_subnet_id" {
-  value = azurerm_subnet.gateway.id
+output "servers_subnet_id" {
+  value = module.spoke.servers_subnet_id
 }

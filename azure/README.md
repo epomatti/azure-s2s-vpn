@@ -37,4 +37,4 @@ terraform apply -auto-approve
 ```
 
 https://youtu.be/K3-isCrb17o
-
+https://youtu.be/Pg7dGDwNNPU

@@ -16,18 +16,6 @@ variable "allowed_admin_public_ips" {
 }
 
 ### Network ###
-variable "vnet_address_space" {
-  type = list(string)
-}
-
-variable "vnet_gateway_subnet_address_prefixes" {
-  type = list(string)
-}
-
-variable "vnet_servers_subnet_address_prefixes" {
-  type = list(string)
-}
-
 variable "vnet_vpn_remote_address_prefixes" {
   type = list(string)
 }
@@ -78,12 +66,20 @@ variable "vgw_egress_nat_internal_mapping" {
 }
 
 ### Local Network Gateway ###
+variable "lgw_create" {
+  type = bool
+}
+
 variable "lgw_gateway_address" {
   type = string
 }
 
 variable "lgw_address_space" {
   type = list(string)
+}
+
+variable "vcn_create" {
+  type = bool
 }
 
 variable "vcn_shared_key" {

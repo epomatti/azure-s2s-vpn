@@ -1,22 +1,34 @@
-resource "azurerm_virtual_network" "default" {
-  name                = "vnet-${var.workload}"
-  address_space       = var.vnet_address_space
+data "azurerm_network_watcher" "default" {
+  name                = "NetworkWatcher_${var.location}"
+  resource_group_name = "NetworkWatcherRG"
+}
+
+locals {
+  network_watcher_name                = data.azurerm_network_watcher.default.name
+  network_watcher_resource_group_name = data.azurerm_network_watcher.default.resource_group_name
+}
+
+module "hub" {
+  source              = "./hub"
+  workload            = var.workload
   location            = var.location
   resource_group_name = var.resource_group_name
 }
 
-resource "azurerm_subnet" "gateway" {
-  name                 = "GatewaySubnet"
-  resource_group_name  = var.resource_group_name
-  virtual_network_name = azurerm_virtual_network.default.name
-  address_prefixes     = var.gateway_subnet_address_prefixes
+module "spoke" {
+  source              = "./spoke"
+  workload            = var.workload
+  location            = var.location
+  resource_group_name = var.resource_group_name
 }
 
-resource "azurerm_subnet" "servers" {
-  name                 = "servers"
-  resource_group_name  = var.resource_group_name
-  virtual_network_name = azurerm_virtual_network.default.name
-  address_prefixes     = var.servers_subnet_address_prefixes
+module "peering" {
+  source              = "./peering"
+  resource_group_name = var.resource_group_name
+  hub_vnet_id         = module.hub.vnet_id
+  hub_vnet_name       = module.hub.vnet_name
+  spoke_vnet_id       = module.spoke.vnet_id
+  spoke_vnet_name     = module.spoke.vnet_name
 }
 
 module "nsg_servers" {
@@ -24,15 +36,30 @@ module "nsg_servers" {
   workload                    = var.workload
   location                    = var.location
   resource_group_name         = var.resource_group_name
-  subnet_id                   = azurerm_subnet.servers.id
+  subnet_id                   = module.spoke.servers_subnet_id
   allowed_admin_public_ips    = var.allowed_admin_public_ips
   vpn_remote_address_prefixes = var.vpn_remote_address_prefixes
 }
 
-module "flow_logs" {
+module "hub_flow_logs" {
   source                              = "./flow_logs"
+  name                                = "hub"
+  network_watcher_name                = local.network_watcher_name
+  network_watcher_resource_group_name = local.network_watcher_resource_group_name
   location                            = var.location
-  vnet_id                             = azurerm_virtual_network.default.id
+  vnet_id                             = module.hub.vnet_id
+  storage_account_id                  = var.storage_account_id
+  log_analytics_workspace_id          = var.log_analytics_workspace_id
+  log_analytics_workspace_resource_id = var.log_analytics_id
+}
+
+module "spoke_flow_logs" {
+  source                              = "./flow_logs"
+  name                                = "spoke"
+  network_watcher_name                = local.network_watcher_name
+  network_watcher_resource_group_name = local.network_watcher_resource_group_name
+  location                            = var.location
+  vnet_id                             = module.spoke.vnet_id
   storage_account_id                  = var.storage_account_id
   log_analytics_workspace_id          = var.log_analytics_workspace_id
   log_analytics_workspace_resource_id = var.log_analytics_id

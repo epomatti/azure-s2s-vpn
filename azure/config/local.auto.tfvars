@@ -24,10 +24,12 @@ vgw_egress_nat_external_mapping           = "100.0.0.0/24"
 vgw_egress_nat_internal_mapping           = "10.0.20.0/24"
 
 ### VPN Local Gateway ###
+lgw_create          = false
 lgw_gateway_address = "1.2.3.4"
 lgw_address_space   = ["172.16.0.0/16"]
 
 ### VPN Gateway Connection ###
+vcn_create      = false
 vcn_shared_key  = "<secret>"
 vcn_bgp_enabled = true
 
