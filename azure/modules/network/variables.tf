@@ -10,7 +10,11 @@ variable "resource_group_name" {
   type = string
 }
 
-variable "vpn_remote_address_prefixes" {
+variable "vpn_remote_ingress_address_prefixes" {
+  type = list(string)
+}
+
+variable "vpn_remote_egress_address_prefixes" {
   type = list(string)
 }
 

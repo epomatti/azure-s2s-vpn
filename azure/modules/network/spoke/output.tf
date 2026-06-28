@@ -9,3 +9,7 @@ output "vnet_name" {
 output "servers_subnet_id" {
   value = azurerm_subnet.servers.id
 }
+
+output "servers_subnet_address_prefixes" {
+  value = azurerm_subnet.servers.address_prefixes
+}

@@ -32,13 +32,14 @@ module "peering" {
 }
 
 module "nsg_servers" {
-  source                      = "./nsg/servers"
-  workload                    = var.workload
-  location                    = var.location
-  resource_group_name         = var.resource_group_name
-  subnet_id                   = module.spoke.servers_subnet_id
-  allowed_admin_public_ips    = var.allowed_admin_public_ips
-  vpn_remote_address_prefixes = var.vpn_remote_address_prefixes
+  source                              = "./nsg/servers"
+  workload                            = var.workload
+  location                            = var.location
+  resource_group_name                 = var.resource_group_name
+  subnet_id                           = module.spoke.servers_subnet_id
+  allowed_admin_public_ips            = var.allowed_admin_public_ips
+  vpn_remote_ingress_address_prefixes = var.vpn_remote_ingress_address_prefixes
+  vpn_remote_egress_address_prefixes  = var.vpn_remote_egress_address_prefixes
 }
 
 module "hub_flow_logs" {

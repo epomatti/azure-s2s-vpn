@@ -15,11 +15,6 @@ variable "allowed_admin_public_ips" {
   type = list(string)
 }
 
-### Network ###
-variable "vnet_vpn_remote_address_prefixes" {
-  type = list(string)
-}
-
 ### VPN Gateway ###
 variable "vgw_vpn_type" {
   type = string
@@ -49,19 +44,8 @@ variable "vgw_bgp_route_translation_for_nat_enabled" {
   type = bool
 }
 
-variable "vgw_ingress_nat_external_mapping" {
-  type = string
-}
-
-variable "vgw_ingress_nat_internal_mapping" {
-  type = string
-}
-
-variable "vgw_egress_nat_external_mapping" {
-  type = string
-}
-
-variable "vgw_egress_nat_internal_mapping" {
+### VPN NAT ###
+variable "remote_network_cidr" {
   type = string
 }
 

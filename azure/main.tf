@@ -10,6 +10,12 @@ terraform {
 locals {
   zones        = [1, 2, 3]
   primary_zone = local.zones[0]
+
+  # Remote NAT Address Prefixes
+  remote_nat_ingress_cidr             = "200.0.0.0/24"
+  remote_nat_egress_cidr              = "100.0.0.0/24"
+  remote_nat_ingress_address_prefixes = [local.remote_nat_ingress_cidr]
+  remote_nat_egress_address_prefixes  = [local.remote_nat_egress_cidr]
 }
 
 module "resource_groups" {
@@ -32,12 +38,13 @@ module "storage_troubleshoot" {
 }
 
 module "network" {
-  source                      = "./modules/network"
-  workload                    = var.workload
-  resource_group_name         = module.resource_groups.network
-  location                    = var.location
-  vpn_remote_address_prefixes = var.vnet_vpn_remote_address_prefixes
-  allowed_admin_public_ips    = var.allowed_admin_public_ips
+  source                              = "./modules/network"
+  workload                            = var.workload
+  resource_group_name                 = module.resource_groups.network
+  location                            = var.location
+  vpn_remote_ingress_address_prefixes = local.remote_nat_ingress_address_prefixes
+  vpn_remote_egress_address_prefixes  = local.remote_nat_egress_address_prefixes
+  allowed_admin_public_ips            = var.allowed_admin_public_ips
 
   # Flow Logs
   storage_account_id         = module.storage_troubleshoot.storage_account_id
@@ -46,55 +53,55 @@ module "network" {
 }
 
 ### VPN Gateway ###
-# module "gateway" {
-#   source               = "./modules/vpn_gateway/gateway"
-#   workload             = var.workload
-#   resource_group_name  = module.resource_groups.network
-#   location             = var.location
-#   zones                = local.zones
-#   gateway_subnet_id    = module.network.gateway_subnet_id
-#   vgw_vpn_type         = var.vgw_vpn_type
-#   vgw_active_active    = var.vgw_active_active
-#   vgw_bgp_enabled      = var.vgw_bgp_enabled
-#   vgw_bgp_settings_asn = var.vgw_bgp_settings_asn
-#   vgw_sku              = var.vgw_sku
-#   vgw_generation       = var.vgw_generation
+module "gateway" {
+  source               = "./modules/vpn_gateway/gateway"
+  workload             = var.workload
+  resource_group_name  = module.resource_groups.network
+  location             = var.location
+  zones                = local.zones
+  gateway_subnet_id    = module.network.gateway_subnet_id
+  vgw_vpn_type         = var.vgw_vpn_type
+  vgw_active_active    = var.vgw_active_active
+  vgw_bgp_enabled      = var.vgw_bgp_enabled
+  vgw_bgp_settings_asn = var.vgw_bgp_settings_asn
+  vgw_sku              = var.vgw_sku
+  vgw_generation       = var.vgw_generation
 
-#   vgw_bgp_route_translation_for_nat_enabled = var.vgw_bgp_route_translation_for_nat_enabled
+  vgw_bgp_route_translation_for_nat_enabled = var.vgw_bgp_route_translation_for_nat_enabled
 
-#   depends_on = [
-#     module.network
-#   ]
-# }
+  depends_on = [
+    module.network
+  ]
+}
 
-# module "routes" {
-#   source                = "./modules/network/routes"
-#   workload              = var.workload
-#   resource_group_name   = module.resource_groups.network
-#   location              = var.location
-#   servers_subnet_id     = module.network.servers_subnet_id
-#   remote_address_prefix = var.vnet_vpn_remote_address_prefixes[0]
+module "routes" {
+  source              = "./modules/network/routes"
+  workload            = var.workload
+  resource_group_name = module.resource_groups.network
+  location            = var.location
+  servers_subnet_id   = module.network.servers_subnet_id
+  remote_egress_cidr  = local.remote_nat_egress_cidr
 
-#   depends_on = [
-#     module.gateway
-#   ]
-# }
+  depends_on = [
+    module.gateway
+  ]
+}
 
-# module "gateway_nat_rules" {
-#   source                       = "./modules/vpn_gateway/nat_rules"
-#   workload                     = var.workload
-#   resource_group_name          = module.resource_groups.network
-#   location                     = var.location
-#   vgw_id                       = module.gateway.vgw_id
-#   ingress_nat_external_mapping = var.vgw_ingress_nat_external_mapping
-#   ingress_nat_internal_mapping = var.vgw_ingress_nat_internal_mapping
-#   egress_nat_external_mapping  = var.vgw_egress_nat_external_mapping
-#   egress_nat_internal_mapping  = var.vgw_egress_nat_internal_mapping
+module "gateway_nat_rules" {
+  source                       = "./modules/vpn_gateway/nat_rules"
+  workload                     = var.workload
+  resource_group_name          = module.resource_groups.network
+  location                     = var.location
+  vgw_id                       = module.gateway.vgw_id
+  ingress_nat_external_mapping = local.remote_nat_ingress_cidr
+  ingress_nat_internal_mapping = var.remote_network_cidr
+  egress_nat_external_mapping  = local.remote_nat_egress_cidr
+  egress_nat_internal_mapping  = module.network.servers_subnet_address_prefixes[0]
 
-#   depends_on = [
-#     module.gateway
-#   ]
-# }
+  depends_on = [
+    module.gateway
+  ]
+}
 
 # module "local_network_gateway" {
 #   count               = var.lgw_create ? 1 : 0
