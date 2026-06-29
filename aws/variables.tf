@@ -48,3 +48,7 @@ variable "ec2_server_instance_type" {
 variable "ec2_server_volume_size" {
   type = number
 }
+
+variable "ec2_server_private_ip" {
+  type = string
+}

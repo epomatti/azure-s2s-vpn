@@ -75,6 +75,10 @@ variable "vcn_bgp_enabled" {
   type = bool
 }
 
+### Private DNS Zone ###
+variable "aws_server_private_ip" {
+  type = string
+}
 
 
 # variable "vnet_cidr_address" {

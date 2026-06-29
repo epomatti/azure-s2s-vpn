@@ -18,6 +18,7 @@ resource "aws_instance" "default" {
   associate_public_ip_address = false
   subnet_id                   = var.subnet_id
   vpc_security_group_ids      = [aws_security_group.default.id]
+  private_ip                  = var.private_ip
 
   availability_zone    = data.aws_subnet.selected.availability_zone
   iam_instance_profile = aws_iam_instance_profile.default.id

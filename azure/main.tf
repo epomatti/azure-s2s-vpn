@@ -12,8 +12,8 @@ locals {
   primary_zone = local.zones[0]
 
   # Remote NAT Address Prefixes
-  remote_nat_ingress_cidr             = "192.168.100.0/24"
-  remote_nat_egress_cidr              = "192.168.200.0/24"
+  remote_nat_ingress_cidr             = "192.168.200.0/24"
+  remote_nat_egress_cidr              = "192.168.100.0/24"
   remote_nat_ingress_address_prefixes = [local.remote_nat_ingress_cidr]
   remote_nat_egress_address_prefixes  = [local.remote_nat_egress_cidr]
 }
@@ -144,6 +144,13 @@ module "diagnostic_settings" {
   source                     = "./modules/diagnostic_settings"
   log_analytics_workspace_id = module.monitoring.log_analytics_id
   vgw_id                     = module.gateway.vgw_id
+}
+
+module "private_dns" {
+  source                = "./modules/dns"
+  resource_group_name   = module.resource_groups.network
+  spoke_vnet_id         = module.network.spoke_vnet_id
+  aws_server_private_ip = var.aws_server_private_ip
 }
 
 module "linux_server" {

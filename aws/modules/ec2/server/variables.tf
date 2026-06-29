@@ -17,3 +17,7 @@ variable "vpc_id" {
 variable "volume_size" {
   type = number
 }
+
+variable "private_ip" {
+  type = string
+}

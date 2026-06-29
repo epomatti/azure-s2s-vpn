@@ -36,6 +36,7 @@ module "server" {
   ami           = var.ec2_server_ami
   instance_type = var.ec2_server_instance_type
   volume_size   = var.ec2_server_volume_size
+  private_ip    = var.ec2_server_private_ip
 
   # Wait for the NAT Gateway
   depends_on = [module.vpc]

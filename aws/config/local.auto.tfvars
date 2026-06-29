@@ -4,9 +4,9 @@ workload   = "contoso"
 
 ### VPC
 vpc_cidr                 = "172.16.0.0/16"
-vpc_public_subnet_cidr   = "172.16.50.0/24"
+vpc_public_subnet_cidr   = "172.16.249.0/24"
 vpc_priv_subnet_cidr     = "172.16.100.0/24"
-remote_vpn_workload_cidr = "192.168.200.0/24"
+remote_vpn_workload_cidr = "192.168.100.0/24"
 
 ### Firewall
 ec2_firewall_ami           = "ami-0dcb8e7f912279c9a"
@@ -17,3 +17,4 @@ ec2_firewall_volume_size   = 20
 ec2_server_ami           = "ami-007afe6af8adb148f"
 ec2_server_instance_type = "t4g.micro"
 ec2_server_volume_size   = 8
+ec2_server_private_ip    = "172.16.100.20"
