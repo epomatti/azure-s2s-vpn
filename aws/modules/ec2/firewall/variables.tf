@@ -6,7 +6,11 @@ variable "instance_type" {
   type = string
 }
 
-variable "subnet_id" {
+variable "public_subnet_id" {
+  type = string
+}
+
+variable "private_subnet_id" {
   type = string
 }
 

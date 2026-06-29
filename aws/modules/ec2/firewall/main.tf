@@ -1,3 +1,7 @@
+data "aws_subnet" "selected" {
+  id = var.public_subnet_id
+}
+
 locals {
   name = "pfsense-firewall"
 }
@@ -7,28 +11,24 @@ resource "aws_iam_instance_profile" "default" {
   role = aws_iam_role.default.id
 }
 
-resource "aws_eip" "default" {
-  instance = aws_instance.default.id
-  domain   = "vpc"
+resource "aws_eip" "admin" {
+  domain            = "vpc"
+  network_interface = aws_network_interface.admin.id
 }
 
-data "aws_subnet" "selected" {
-  id = var.subnet_id
+resource "aws_eip" "wan" {
+  domain            = "vpc"
+  network_interface = aws_network_interface.wan.id
+
+  depends_on = [aws_network_interface_attachment.wan]
 }
 
 resource "aws_instance" "default" {
   ami           = var.ami
   instance_type = var.instance_type
 
-  associate_public_ip_address = true
-  subnet_id                   = var.subnet_id
-  vpc_security_group_ids      = [aws_security_group.default.id]
-
   availability_zone    = data.aws_subnet.selected.availability_zone
   iam_instance_profile = aws_iam_instance_profile.default.id
-
-  # Required for the firewall
-  source_dest_check = false
 
   metadata_options {
     http_endpoint = "enabled"
@@ -47,6 +47,10 @@ resource "aws_instance" "default" {
     }
   }
 
+  primary_network_interface {
+    network_interface_id = aws_network_interface.admin.id
+  }
+
   lifecycle {
     ignore_changes = [
       ami,
@@ -60,8 +64,49 @@ resource "aws_instance" "default" {
   }
 }
 
-### IAM Role ###
+resource "aws_network_interface" "admin" {
+  subnet_id         = var.public_subnet_id
+  security_groups   = [aws_security_group.default.id]
+  source_dest_check = false
 
+  tags = {
+    Name = "nic-${local.name}-admin"
+  }
+}
+
+resource "aws_network_interface" "wan" {
+  subnet_id         = var.public_subnet_id
+  security_groups   = [aws_security_group.default.id]
+  source_dest_check = false
+
+  tags = {
+    Name = "nic-${local.name}-wan"
+  }
+}
+
+resource "aws_network_interface" "private" {
+  subnet_id         = var.private_subnet_id
+  security_groups   = [aws_security_group.default.id]
+  source_dest_check = false
+
+  tags = {
+    Name = "nic-${local.name}-private"
+  }
+}
+
+resource "aws_network_interface_attachment" "wan" {
+  instance_id          = aws_instance.default.id
+  network_interface_id = aws_network_interface.wan.id
+  device_index         = 1
+}
+
+resource "aws_network_interface_attachment" "private" {
+  instance_id          = aws_instance.default.id
+  network_interface_id = aws_network_interface.private.id
+  device_index         = 2
+}
+
+### IAM Role ###
 resource "aws_iam_role" "default" {
   name = local.name
 

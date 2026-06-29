@@ -21,12 +21,13 @@ module "vpc" {
 }
 
 module "firewall" {
-  source        = "./modules/ec2/firewall"
-  vpc_id        = module.vpc.vpc_id
-  subnet_id     = module.vpc.public_subnet_id
-  ami           = var.ec2_firewall_ami
-  instance_type = var.ec2_firewall_instance_type
-  volume_size   = var.ec2_firewall_volume_size
+  source            = "./modules/ec2/firewall"
+  vpc_id            = module.vpc.vpc_id
+  public_subnet_id  = module.vpc.public_subnet_id
+  private_subnet_id = module.vpc.private_subnet_id
+  ami               = var.ec2_firewall_ami
+  instance_type     = var.ec2_firewall_instance_type
+  volume_size       = var.ec2_firewall_volume_size
 }
 
 module "server" {
@@ -46,27 +47,14 @@ module "server" {
 resource "aws_route" "r1" {
   route_table_id         = module.vpc.private_route_table_id
   destination_cidr_block = var.remote_vpn_workload_cidr
-  network_interface_id   = module.firewall.network_interface_id
+  network_interface_id   = module.firewall.wan_network_interface_id
 }
 
-resource "aws_route" "r2" {
-  route_table_id         = module.vpc.public_route_table_id
-  destination_cidr_block = var.remote_vpn_workload_cidr
-  network_interface_id   = module.firewall.network_interface_id
-}
-
-# resource "aws_route" "p2s1" {
+# resource "aws_route" "r2" {
 #   route_table_id         = module.vpc.public_route_table_id
-#   destination_cidr_block = var.remote_vpn_p2s_cidr
+#   destination_cidr_block = var.remote_vpn_workload_cidr
 #   network_interface_id   = module.firewall.network_interface_id
 # }
-
-# resource "aws_route" "p2s2" {
-#   route_table_id         = module.vpc.private_route_table_id
-#   destination_cidr_block = var.remote_vpn_p2s_cidr
-#   network_interface_id   = module.firewall.network_interface_id
-# }
-
 
 module "route53" {
   source                  = "./modules/route53"
