@@ -147,6 +147,16 @@ resource "aws_security_group_rule" "allow_egress_internet_https" {
   security_group_id = aws_security_group.default.id
 }
 
+resource "aws_security_group_rule" "allow_all_egress" {
+  description       = "Allow All Egress"
+  type              = "egress"
+  from_port         = -1
+  to_port           = -1
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.default.id
+}
+
 ### Firewall Rules - Ingress ###
 resource "aws_security_group_rule" "allow_ingress_udp_500" {
   description       = "UDP500"
@@ -174,6 +184,16 @@ resource "aws_security_group_rule" "allow_ingress_openvpn" {
   from_port         = 1194
   to_port           = 1194
   protocol          = "UDP"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.default.id
+}
+
+resource "aws_security_group_rule" "allow_all_ingress" {
+  description       = "Allow All Ingress"
+  type              = "ingress"
+  from_port         = -1
+  to_port           = -1
+  protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.default.id
 }
