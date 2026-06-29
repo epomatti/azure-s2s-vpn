@@ -19,9 +19,12 @@ remote_network_cidr = "172.16.100.0/24"
 ### VPN Local Gateway ###
 lgw_create          = true
 lgw_gateway_address = "x.x.x.x"
-lgw_address_space   = ["172.16.100.0/24"]
+lgw_address_space   = ["192.168.200.0/24"]
 
 ### VPN Gateway Connection ###
 vcn_create      = true
 vcn_shared_key  = "<secret>"
 vcn_bgp_enabled = false
+
+### Private DNS Zone ###
+aws_server_private_ip = "192.168.200.20"

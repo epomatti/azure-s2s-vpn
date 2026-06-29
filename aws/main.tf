@@ -66,3 +66,10 @@ resource "aws_route" "r2" {
 #   destination_cidr_block = var.remote_vpn_p2s_cidr
 #   network_interface_id   = module.firewall.network_interface_id
 # }
+
+
+module "route53" {
+  source                  = "./modules/route53"
+  vpc_id                  = module.vpc.vpc_id
+  azure_server_private_ip = var.azure_server_private_ip
+}

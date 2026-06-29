@@ -52,3 +52,8 @@ variable "ec2_server_volume_size" {
 variable "ec2_server_private_ip" {
   type = string
 }
+
+### Route 53 ###
+variable "azure_server_private_ip" {
+  type = string
+}
